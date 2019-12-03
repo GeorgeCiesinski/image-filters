@@ -1,5 +1,12 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Dec  2 20:37:51 2019
+
+@author: georg
+"""
+
 import cv2
-import numpy
+import numpy as np
 
 
 # Dummy function that does nothing (as a dummy event handler for Trackbars)
@@ -8,7 +15,7 @@ def dummy():
 
 
 # Create the UI (Window and trackbars)
-cv2.namedWindow('Image Filters', cv2.WINDOW_GUI_NORMAL)
+cv2.namedWindow('Image Filters')
 # TODO: Get rid of the black rectangle in window
 
 # TODO: Make trackbars the same width in Linux...
