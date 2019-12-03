@@ -31,7 +31,24 @@ cv2.createTrackbar('filters', 'Image Filters', 0, 1, dummy)
 cv2.createTrackbar('grayscale', 'Image Filters', 0, 1, dummy)
 
 
-# TODO: Remove this line!
-cv2.waitKey(0)
+# Main UI Loop
+# For each iteration: Pulls trackbar values, applies any filters, waits for keypress, and shows image
+while True:
+    # TODO: read all of the trackbar values
+    # TODO: apply the filters
+    # TODO: apply the brightness and contrast
+    
+    # Wait for keypress (100 milliseconds)
+    key = cv2.waitKey(100)
+    
+    # ord converts character into integer, compares it to the integer value "key"
+    # If key is q, program will quit
+    if key == ord('q'):
+        break
+    elif key == ord('s'):
+        # TODO: Save image
+        pass
+
+
 # Window Cleanup
 cv2.destroyAllWindows()
