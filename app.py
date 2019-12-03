@@ -13,8 +13,20 @@ import numpy as np
 def dummy():
     pass
 
+"""
+Read in an image and make a grayscale copy
+"""
 
-# Create the UI (Window and trackbars)
+# TODO: Add button to open a specific image using relative paths
+# Reads image in folder and assigns it to color_original variable
+color_original = cv2.imread('cityscape.jpg')
+# Converts to grayscale and saves as gray_original variable
+gray_original = cv2.cvtColor(color_original, cv2.COLOR_BGR2GRAY)
+
+"""
+Create the UI (Window and trackbars)
+"""
+
 cv2.namedWindow('Image Filters')
 # TODO: Get rid of the black rectangle in window
 
@@ -35,6 +47,8 @@ cv2.createTrackbar('grayscale', 'Image Filters', 0, 1, dummy)
 # For each iteration: Pulls trackbar values, applies any filters, waits for keypress, and shows image
 while True:
     # TODO: read all of the trackbar values
+    # Read grayscale trackbar value
+    grayscale = cv2.getTrackbarPos('grayscale', 'Image Filters')
     # TODO: apply the filters
     # TODO: apply the brightness and contrast
     
@@ -48,6 +62,14 @@ while True:
     elif key == ord('s'):
         # TODO: Save image
         pass
+    
+    # Show the image
+    if grayscale == 0:
+        # Show color as trackbar is set to color
+        # TODO: Show modified image
+        cv2.imshow('Image Filters', color_original)
+    else:
+        cv2.imshow('Image Filters', gray_original)
 
 
 # Window Cleanup
