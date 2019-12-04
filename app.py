@@ -46,11 +46,19 @@ cv2.createTrackbar('grayscale', 'Image Filters', 0, 1, dummy)
 # Main UI Loop
 # For each iteration: Pulls trackbar values, applies any filters, waits for keypress, and shows image
 while True:
-    # TODO: read all of the trackbar values
-    # Read grayscale trackbar value
+    # read all of the trackbar values
     grayscale = cv2.getTrackbarPos('grayscale', 'Image Filters')
+    contrast = cv2.getTrackbarPos('contrast', 'Image Filters')
+    brightness = cv2.getTrackbarPos('brightness', 'Image Filters')
     # TODO: apply the filters
-    # TODO: apply the brightness and contrast
+    
+    """
+    Apply the brightness and contrast
+    dst = cv2.addWeighted(src1, alpha, src2, beta, gamma)
+    dst = cv2.addWeighted(image, contrast, zeros_image, 0, brightness) || src2 must be image of 0's, so we use np.zeros_like to do this
+    """
+    color_modified = cv2.addWeighted(color_original, contrast, np.zeros_like(color_original), 0, brightness - 50)
+    gray_modified = cv2.addWeighted(gray_original, contrast, np.zeros_like(gray_original), 0, brightness - 50)
     
     # Wait for keypress (100 milliseconds)
     key = cv2.waitKey(100)
@@ -66,10 +74,9 @@ while True:
     # Show the image
     if grayscale == 0:
         # Show color as trackbar is set to color
-        # TODO: Show modified image
-        cv2.imshow('Image Filters', color_original)
+        cv2.imshow('Image Filters', color_modified)
     else:
-        cv2.imshow('Image Filters', gray_original)
+        cv2.imshow('Image Filters', gray_modified)
 
 
 # Window Cleanup
