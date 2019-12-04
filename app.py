@@ -37,7 +37,11 @@ gaussian_kernel1 = cv2.getGaussianKernel(3, 0)
 gaussian_kernel2 = cv2.getGaussianKernel(5, 0)
 
 # also known as the averaging kernel (takes average of pixel values in the window)
-box_kernel = np.array([[1, 1, 1], [1, 1, 1], [1, 1, 1]], np.float32) / 9
+box_kernel = np.array([
+        [1, 1, 1], 
+        [1, 1, 1], 
+        [1, 1, 1]
+        ], np.float32) / 9
 
     
 # Kernel array
@@ -75,6 +79,8 @@ cv2.createTrackbar('filters', 'Image Filters', 0, len(kernels)-1, dummy)
 # Grayscale Trackbar - switch only: values 0 & 1.
 cv2.createTrackbar('grayscale', 'Image Filters', 0, 1, dummy)
 
+# Count for saving images
+count = 1
 
 # Main UI Loop
 # For each iteration: Pulls trackbar values, applies any filters, waits for keypress, and shows image
@@ -106,8 +112,14 @@ while True:
     if key == ord('q'):
         break
     elif key == ord('s'):
-        # TODO: Save image
-        pass
+        # Save image
+        if grayscale == 0:
+            cv2.imwrite('output\output-{}.png'.format(count), color_modified)
+        else:
+            cv2.imwrite('output\output-{}.png'.format(count), gray_modified)
+        
+        # Increment count to avoid overwriting previous saved files
+        count +=1
     
     # Show the image
     if grayscale == 0:
