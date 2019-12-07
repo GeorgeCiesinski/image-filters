@@ -2,16 +2,44 @@
 """
 Created on Mon Dec  2 20:37:51 2019
 
-@author: georg
+@author: George Ciesinski
 """
 
 import cv2
 import numpy as np
+from tkinter import *
+from tkinter import filedialog
+
+# Temporary function
+# TODO: Delete this function
+def doNothing():
+    print("I am doing nothing")
 
 
 # Dummy function that does nothing (as a dummy event handler for Trackbars)
 def dummy():
     pass
+
+"""
+tkinter GUI
+"""
+
+# Main tkinter window
+root = Tk()
+# Window title
+root.title("Image Filters")
+
+root.filename = filedialog.askopenfilename(
+        initialdir="/", 
+        title = "Select a File", 
+        filetypes=(
+                ("png files", "*.png"), 
+                ("jpg files", "*jpg"), 
+                ("all files", "*.*")
+                )
+        )
+
+root.mainloop()
 
 """
 Define convolution kernels
