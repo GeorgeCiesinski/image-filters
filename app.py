@@ -7,7 +7,7 @@ Created on Mon Dec  2 20:37:51 2019
 
 import cv2
 import numpy as np
-from tkinter import *
+import tkinter
 from tkinter import filedialog
 
 # Temporary function
@@ -15,21 +15,12 @@ from tkinter import filedialog
 def doNothing():
     print("I am doing nothing")
 
-
 # Dummy function that does nothing (as a dummy event handler for Trackbars)
 def dummy():
     pass
 
-"""
-tkinter GUI
-"""
-
-# Main tkinter window
-root = Tk()
-# Window title
-root.title("Image Filters")
-
-root.filename = filedialog.askopenfilename(
+def open_dialog():
+    root.filename = filedialog.askopenfilename(
         initialdir="/", 
         title = "Select a File", 
         filetypes=(
@@ -38,6 +29,46 @@ root.filename = filedialog.askopenfilename(
                 ("all files", "*.*")
                 )
         )
+
+"""
+tkinter GUI
+"""
+
+# Main tkinter window
+root = tkinter.Tk()
+
+# Window Setup
+root.title("Image Filters")
+root.geometry("800x400")
+
+"""
+Window Menu
+"""
+
+menu = tkinter.Menu(root)
+root.config(menu=menu)
+
+# File Menu
+fileMenu = tkinter.Menu(menu)
+menu.add_cascade(label="File", menu = fileMenu)
+fileMenu.add_command(label="Open", command = open_dialog)
+fileMenu.add_command(label="Save", command = doNothing)
+fileMenu.add_separator()
+fileMenu.add_command(label="Quit", command = doNothing)
+
+# Edit Menu
+editMenu = tkinter.Menu(menu)
+menu.add_cascade(label="Help", menu=editMenu)
+
+
+# OpenCV Test
+# Load image
+color_original = cv2.imread('cityscape.jpg')
+
+
+
+
+
 
 root.mainloop()
 
