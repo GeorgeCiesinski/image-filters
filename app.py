@@ -13,81 +13,91 @@ from PIL import Image
 from PIL import ImageTk
 
 
-# Temporary function
-# TODO: Delete this function
-def doNothing():
-    print("I am doing nothing")
-
 # Dummy function that does nothing (as a dummy event handler for Trackbars)
 def dummy():
-    pass
-
-# Opens an open_dialog allowing users to select a file they want to open
-def open_dialog():
-    root.filename = filedialog.askopenfilename(
-        initialdir="/", 
-        title = "Select a File", 
-        filetypes=(
-                ("png files", "*.png"), 
-                ("jpg files", "*jpg"), 
-                ("all files", "*.*")
-                )
-        )
+    print("Dummy method.")
 
 """
 tkinter GUI
 """
 
-# Main tkinter window
-root = tkinter.Tk()
+class Gui:
+    
+    def __init__(self):
+        
+        # Main tkinter window
+        self.root = tkinter.Tk()
+        
+        # Window Setup
+        self.root.title("Image Filters")
+        self.root.geometry("800x400")
+        
+        # Creates the menu bar
+        self.create_menu()
 
-# Window Setup
-root.title("Image Filters")
-root.geometry("800x400")
+    def create_menu(self):
 
-"""
-Window Menu
-"""
+        """
+        Window Menu
+        """
+        
+        self.menu = tkinter.Menu(self.root)
+        self.root.config(menu=self.menu)
+        
+        # File Menu
+        self.fileMenu = tkinter.Menu(self.menu)
+        self.menu.add_cascade(label="File", menu = self.fileMenu)
+        self.fileMenu.add_command(label="Open", command = self.open_dialog)
+        self.fileMenu.add_command(label="Save", command = dummy)
+        self.fileMenu.add_separator()
+        self.fileMenu.add_command(label="Quit", command = dummy)
+        
+        # Edit Menu
+        self.editMenu = tkinter.Menu(self.menu)
+        self.menu.add_cascade(label="Help", menu=self.editMenu)
 
-menu = tkinter.Menu(root)
-root.config(menu=menu)
+    # Opens an open_dialog allowing users to select a file they want to open
+    def open_dialog(self):
+        self.root.filename = filedialog.askopenfilename(
+            initialdir="/", 
+            title = "Select a File", 
+            filetypes=(
+                    ("png files", "*.png"), 
+                    ("jpg files", "*jpg"), 
+                    ("all files", "*.*")
+                    )
+            )
 
-# File Menu
-fileMenu = tkinter.Menu(menu)
-menu.add_cascade(label="File", menu = fileMenu)
-fileMenu.add_command(label="Open", command = open_dialog)
-fileMenu.add_command(label="Save", command = doNothing)
-fileMenu.add_separator()
-fileMenu.add_command(label="Quit", command = doNothing)
+class ImageProcessor:
 
-# Edit Menu
-editMenu = tkinter.Menu(menu)
-menu.add_cascade(label="Help", menu=editMenu)
+    def load_image(self):
+        
+        # OpenCV Test
+        # Load image
+        self.image = cv2.imread('cityscape.jpg')
+        
+        # Get image dimensions
+        height, width, no_channels = self.image.shape
+        
+        # Create canvas to fit the image
+        self.canvas = tkinter.Canvas(self.root, width = width, height = height)
+        self.canvas.pack()
+        
+        self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
+        self.image = Image.fromarray(self.image)
+        self.image = ImageTk.PhotoImage(self.image)
+        
+        self.canvas.create_image(0, 0, image=self.image, anchor=tkinter.NW)
+        self.root.geometry(f"{width}x{height}")
 
+# Create GUI object
+g = Gui()
 
-# OpenCV Test
-# Load image
-image = cv2.imread('cityscape.jpg')
+# Starts the image processor
+ip = ImageProcessor()
+ip.load_image()
 
-# Get image dimensions
-height, width, no_channels = image.shape
-
-# Create canvas to fit the image
-canvas = tkinter.Canvas(root, width = width, height = height)
-canvas.pack()
-
-image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-image = Image.fromarray(image)
-image = ImageTk.PhotoImage(image)
-
-canvas.create_image(0, 0, image=image, anchor=tkinter.NW)
-root.geometry(f"{width}x{height}")
-
-
-
-
-
-root.mainloop()
+g.root.mainloop()
 
 """
 Define convolution kernels
