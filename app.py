@@ -21,12 +21,8 @@ class Gui:
     
     def __init__(self):
         
-        # Main tkinter window
-        self.root = tkinter.Tk()
-        
-        # Window Setup
-        self.root.title("Image Filters")
-        self.root.geometry("800x400")
+        # Create the window
+        self.create_window()
         
         # Creates the menu bar
         self.create_menu()
@@ -34,6 +30,14 @@ class Gui:
     # Dummy function that does nothing (as a dummy event handler for Trackbars)
     def dummy():
         print("Dummy method.")
+        
+    def create_window(self):
+        # Main tkinter window
+        self.root = tkinter.Tk()
+        
+        # Window Setup
+        self.root.title("Image Filters")
+        self.root.geometry("800x400")
 
     def create_menu(self):
 
