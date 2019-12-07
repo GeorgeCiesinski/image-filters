@@ -13,6 +13,48 @@ from PIL import Image
 from PIL import ImageTk
 
 
+class Kernels:
+    
+    """
+    Define convolution kernels
+    """
+    
+    # Kernels
+    
+    identity_kernel = np.array([
+            [0, 0, 0],
+            [0, 1, 0], 
+            [0, 0, 0]
+            ])
+        
+    sharpen_kernel = np.array([
+            [0, -1, 0],
+            [-1, 5, -1],
+            [0, -1, 0]
+            ])
+    
+    # getGaussianKernel(size, standard_deviation) | Larger numbers result in more blurring
+    gaussian_kernel1 = cv2.getGaussianKernel(3, 0)
+    
+    gaussian_kernel2 = cv2.getGaussianKernel(5, 0)
+    
+    # also known as the averaging kernel (takes average of pixel values in the window)
+    box_kernel = np.array([
+            [1, 1, 1], 
+            [1, 1, 1], 
+            [1, 1, 1]
+            ], np.float32) / 9
+    
+        
+    # Kernel array
+    k_array = [
+            identity_kernel, 
+            sharpen_kernel, 
+            gaussian_kernel1, 
+            gaussian_kernel2, 
+            box_kernel
+            ]
+
 """
 tkinter GUI
 """
@@ -51,10 +93,19 @@ class Gui:
         # File Menu
         self.fileMenu = tkinter.Menu(self.menu)
         self.menu.add_cascade(label="File", menu = self.fileMenu)
-        self.fileMenu.add_command(label="Open", command = self.open_dialog)
-        self.fileMenu.add_command(label="Save", command = self.dummy)
+        self.fileMenu.add_command(
+                label="Open", 
+                command = self.open_dialog
+                )
+        self.fileMenu.add_command(
+                label="Save", 
+                command = self.dummy
+                )
         self.fileMenu.add_separator()
-        self.fileMenu.add_command(label="Quit", command = self.dummy)
+        self.fileMenu.add_command(
+                label="Quit", 
+                command = self.dummy
+                )
         
         # Edit Menu
         self.editMenu = tkinter.Menu(self.menu)
@@ -66,9 +117,9 @@ class Gui:
             initialdir="/", 
             title = "Select a File", 
             filetypes=(
-                    ("png files", "*.png"), 
-                    ("jpg files", "*jpg"), 
-                    ("all files", "*.*")
+                    ("Png files", "*.png"), 
+                    ("Jpg files", "*jpg"), 
+                    ("All files", "*.*")
                     )
             )
         
@@ -82,14 +133,18 @@ Image Processor
 class ImageProcessor:
     
     def welcome_image(self):
+        
+        # Welcome image path
         self.image = cv2.imread("welcome.png")
+        
         # Get image dimensions
         height, width, no_channels = self.image.shape
         
         # Create canvas to fit the image
         self.canvas = tkinter.Canvas(g.root, width = width, height = height)
-        self.canvas.pack()
+        self.canvas.grid(row=2, column=0, columnspan=2)
         
+        # Convert from BGR to RGB, then to PhotoImage
         self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
         self.image = Image.fromarray(self.image)
         self.image = ImageTk.PhotoImage(self.image)
@@ -97,18 +152,76 @@ class ImageProcessor:
         self.canvas.create_image(0, 0, image=self.image, anchor=tkinter.NW)
         g.root.geometry(f"{width}x{height}")
         
+    def create_sliders(self):
+        
+        print("Creating Sliders")
+        
+        # Brightness slider
+        self.brightness = tkinter.Scale(
+                g.root, 
+                from_=0, 
+                to=100, 
+                label="Brightness",
+                length=200,
+                orient=tkinter.HORIZONTAL
+                )
+        # Sets Brightness to 50 to start
+        self.brightness.set(50)
+        
+        # Contrast Slider
+        self.contrast = tkinter.Scale(
+                g.root, 
+                from_=1, 
+                to=100, 
+                label="Contrast",
+                length=200,
+                orient=tkinter.HORIZONTAL
+                )        
+        
+        # Grayscale Slider
+        self.grayscale = tkinter.Scale(
+                g.root, 
+                from_=0, 
+                to=1, 
+                label="Grayscale",
+                length=200,
+                orient=tkinter.HORIZONTAL
+                )     
+        
+        # Filters Slider
+        self.filters = tkinter.Scale(
+                g.root, 
+                from_=1, 
+                to=5, 
+                label="Filters",
+                length=200,
+                orient=tkinter.HORIZONTAL
+                )      
+        
+        # Put all the sliders in their grid spots
+        self.brightness.grid(row=0, column=0)
+        self.contrast.grid(row=1, column=0)
+        self.grayscale.grid(row=0, column=1)
+        self.filters.grid(row=1, column=1)
+        
+        
 
     def load_image(self, path):
+        
+        # TODO: Put a try catch here to catch failed image opens
         
         # OpenCV Test
         # Load image
         print(path)
         self.image = cv2.imread(path)
         
-        # Get image dimensions
+        # Create sliders
+        self.create_sliders()
+        
+        # Get new image dimensions
         height, width, no_channels = self.image.shape
         
-        # Load image into existing canvas        
+        # Load PhotoImage into existing canvas        
         self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
         self.image = Image.fromarray(self.image)
         self.image = ImageTk.PhotoImage(self.image)
@@ -129,45 +242,7 @@ g.root.mainloop()
 
 
 
-"""
-Define convolution kernels
-"""
 
-# Kernels
-
-identity_kernel = np.array([
-        [0, 0, 0],
-        [0, 1, 0], 
-        [0, 0, 0]
-        ])
-    
-sharpen_kernel = np.array([
-        [0, -1, 0],
-        [-1, 5, -1],
-        [0, -1, 0]
-        ])
-
-# getGaussianKernel(size, standard_deviation) | Larger numbers result in more blurring
-gaussian_kernel1 = cv2.getGaussianKernel(3, 0)
-
-gaussian_kernel2 = cv2.getGaussianKernel(5, 0)
-
-# also known as the averaging kernel (takes average of pixel values in the window)
-box_kernel = np.array([
-        [1, 1, 1], 
-        [1, 1, 1], 
-        [1, 1, 1]
-        ], np.float32) / 9
-
-    
-# Kernel array
-kernels = [
-        identity_kernel, 
-        sharpen_kernel, 
-        gaussian_kernel1, 
-        gaussian_kernel2, 
-        box_kernel
-        ]
     
 """
 Read in an image and make a grayscale copy
@@ -191,7 +266,7 @@ cv2.createTrackbar('contrast', 'Image Filters', 1, 100, g.dummy)
 # Brightness Trackbar - initial value is 50 to compensate for negative brightness (cv doesn't allow negative values)
 cv2.createTrackbar('brightness', 'Image Filters', 50, 100, g.dummy)
 # Filter Trackbar
-cv2.createTrackbar('filters', 'Image Filters', 0, len(kernels)-1, g.dummy)
+cv2.createTrackbar('filters', 'Image Filters', 0, len(Kernels.k_array)-1, g.dummy)
 # Grayscale Trackbar - switch only: values 0 & 1.
 cv2.createTrackbar('grayscale', 'Image Filters', 0, 1, g.dummy)
 
@@ -209,8 +284,8 @@ while True:
     kernel_idx = cv2.getTrackbarPos('filters', 'Image Filters')
     
     # apply the filters
-    color_modified = cv2.filter2D(color_original, -1, kernels[kernel_idx])
-    gray_modified = cv2.filter2D(gray_original, -1, kernels[kernel_idx])
+    color_modified = cv2.filter2D(color_original, -1, Kernels.k_array[kernel_idx])
+    gray_modified = cv2.filter2D(gray_original, -1, Kernels.k_array[kernel_idx])
     
     """
     Apply the brightness and contrast
