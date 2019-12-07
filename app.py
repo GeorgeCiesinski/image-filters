@@ -13,10 +13,6 @@ from PIL import Image
 from PIL import ImageTk
 
 
-# Dummy function that does nothing (as a dummy event handler for Trackbars)
-def dummy():
-    print("Dummy method.")
-
 """
 tkinter GUI
 """
@@ -35,6 +31,10 @@ class Gui:
         # Creates the menu bar
         self.create_menu()
 
+    # Dummy function that does nothing (as a dummy event handler for Trackbars)
+    def dummy():
+        print("Dummy method.")
+
     def create_menu(self):
 
         """
@@ -48,9 +48,9 @@ class Gui:
         self.fileMenu = tkinter.Menu(self.menu)
         self.menu.add_cascade(label="File", menu = self.fileMenu)
         self.fileMenu.add_command(label="Open", command = self.open_dialog)
-        self.fileMenu.add_command(label="Save", command = dummy)
+        self.fileMenu.add_command(label="Save", command = self.dummy)
         self.fileMenu.add_separator()
-        self.fileMenu.add_command(label="Quit", command = dummy)
+        self.fileMenu.add_command(label="Quit", command = self.dummy)
         
         # Edit Menu
         self.editMenu = tkinter.Menu(self.menu)
@@ -67,20 +67,23 @@ class Gui:
                     ("all files", "*.*")
                     )
             )
+        
+        if len(self.root.filename) > 0:
+            ip.load_image(self.root.filename)
+
+"""
+Image Processor
+"""
 
 class ImageProcessor:
-
-    def load_image(self):
-        
-        # OpenCV Test
-        # Load image
-        self.image = cv2.imread('cityscape.jpg')
-        
+    
+    def welcome_image(self):
+        self.image = cv2.imread("welcome.png")
         # Get image dimensions
         height, width, no_channels = self.image.shape
         
         # Create canvas to fit the image
-        self.canvas = tkinter.Canvas(self.root, width = width, height = height)
+        self.canvas = tkinter.Canvas(g.root, width = width, height = height)
         self.canvas.pack()
         
         self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
@@ -88,16 +91,39 @@ class ImageProcessor:
         self.image = ImageTk.PhotoImage(self.image)
         
         self.canvas.create_image(0, 0, image=self.image, anchor=tkinter.NW)
-        self.root.geometry(f"{width}x{height}")
+        g.root.geometry(f"{width}x{height}")
+        
+
+    def load_image(self, path):
+        
+        # OpenCV Test
+        # Load image
+        print(path)
+        self.image = cv2.imread(path)
+        
+        # Get image dimensions
+        height, width, no_channels = self.image.shape
+        
+        # Load image into existing canvas        
+        self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
+        self.image = Image.fromarray(self.image)
+        self.image = ImageTk.PhotoImage(self.image)
+        
+        self.canvas.config(width = width, height = height)
+        self.canvas.create_image(0, 0, image=self.image, anchor=tkinter.NW)
+        g.root.geometry(f"{width}x{height}")
 
 # Create GUI object
 g = Gui()
 
 # Starts the image processor
 ip = ImageProcessor()
-ip.load_image()
+ip.welcome_image()
 
+# Tkinter main loop
 g.root.mainloop()
+
+
 
 """
 Define convolution kernels
@@ -157,13 +183,13 @@ cv2.namedWindow('Image Filters')
 # TODO: Make trackbars the same width in Linux...
 # Arguments: trackbarName, windowName, value (initial), count (max value), onChange (event handler)
 # Contrast Trackbar
-cv2.createTrackbar('contrast', 'Image Filters', 1, 100, dummy)
+cv2.createTrackbar('contrast', 'Image Filters', 1, 100, g.dummy)
 # Brightness Trackbar - initial value is 50 to compensate for negative brightness (cv doesn't allow negative values)
-cv2.createTrackbar('brightness', 'Image Filters', 50, 100, dummy)
+cv2.createTrackbar('brightness', 'Image Filters', 50, 100, g.dummy)
 # Filter Trackbar
-cv2.createTrackbar('filters', 'Image Filters', 0, len(kernels)-1, dummy)
+cv2.createTrackbar('filters', 'Image Filters', 0, len(kernels)-1, g.dummy)
 # Grayscale Trackbar - switch only: values 0 & 1.
-cv2.createTrackbar('grayscale', 'Image Filters', 0, 1, dummy)
+cv2.createTrackbar('grayscale', 'Image Filters', 0, 1, g.dummy)
 
 # Count for saving images
 count = 1
