@@ -9,6 +9,9 @@ import cv2
 import numpy as np
 import tkinter
 from tkinter import filedialog
+from PIL import Image
+from PIL import ImageTk
+
 
 # Temporary function
 # TODO: Delete this function
@@ -19,6 +22,7 @@ def doNothing():
 def dummy():
     pass
 
+# Opens an open_dialog allowing users to select a file they want to open
 def open_dialog():
     root.filename = filedialog.askopenfilename(
         initialdir="/", 
@@ -63,8 +67,21 @@ menu.add_cascade(label="Help", menu=editMenu)
 
 # OpenCV Test
 # Load image
-color_original = cv2.imread('cityscape.jpg')
+image = cv2.imread('cityscape.jpg')
 
+# Get image dimensions
+height, width, no_channels = image.shape
+
+# Create canvas to fit the image
+canvas = tkinter.Canvas(root, width = width, height = height)
+canvas.pack()
+
+image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+image = Image.fromarray(image)
+image = ImageTk.PhotoImage(image)
+
+canvas.create_image(0, 0, image=image, anchor=tkinter.NW)
+root.geometry(f"{width}x{height}")
 
 
 
