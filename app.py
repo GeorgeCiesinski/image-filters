@@ -11,6 +11,7 @@ import tkinter
 from tkinter import filedialog
 from PIL import Image
 from PIL import ImageTk
+import logging
 
 
 class Kernels:
@@ -44,7 +45,6 @@ class Kernels:
             [1, 1, 1], 
             [1, 1, 1]
             ], np.float32) / 9
-    
         
     # Kernel array
     k_array = [
@@ -61,6 +61,8 @@ tkinter GUI
 
 class Gui:
     
+    # TODO: Create save dialog
+    
     def __init__(self):
         
         # Create the window
@@ -74,21 +76,28 @@ class Gui:
         print("Dummy method.")
         
     def create_window(self):
+        """
+        create_window creates a new tkinter window including basic setup
+        """
+        
         # Main tkinter window
         self.root = tkinter.Tk()
         
         # Window Setup
         self.root.title("Image Filters")
         self.root.geometry("800x400")
+        
+        logger.debug("Successfully created a new window.")
 
     def create_menu(self):
-
         """
-        Window Menu
+        create_menu creates the menu and submenus inside of it
         """
         
         self.menu = tkinter.Menu(self.root)
         self.root.config(menu=self.menu)
+        
+        logger.debug("Successfully created the base menu.")
         
         # File Menu
         self.fileMenu = tkinter.Menu(self.menu)
@@ -104,15 +113,23 @@ class Gui:
         self.fileMenu.add_separator()
         self.fileMenu.add_command(
                 label="Quit", 
-                command = self.dummy
+                command = self.close_window
                 )
         
-        # Edit Menu
-        self.editMenu = tkinter.Menu(self.menu)
-        self.menu.add_cascade(label="Help", menu=self.editMenu)
+        logger.debug("Successfully created the File menu.")
+        
+        # Help Menu
+        self.helpMenu = tkinter.Menu(self.menu)
+        self.menu.add_cascade(label="Help", menu=self.helpMenu)
+        
+        logger.debug("Successfully created the Help menu.")
 
     # Opens an open_dialog allowing users to select a file they want to open
     def open_dialog(self):
+        """
+        open_dialog creates a new window allowing the user to get the filepath of the file they want to open
+        """
+        
         self.root.filename = filedialog.askopenfilename(
             initialdir="/", 
             title = "Select a File", 
@@ -123,8 +140,20 @@ class Gui:
                     )
             )
         
+        logger.debug(f"Successfully acquired the filepath: {self.root.filename}")
+        
         if len(self.root.filename) > 0:
             ip.load_image(self.root.filename)
+
+    def close_window(self):
+        """
+        close_window destroys the tkinter window and closes the program
+        """
+        
+        logger.debug("User selected Quit from the File menu. Quitting program.")
+        
+        # Destroys window and closes program
+        self.root.destroy()
 
 """
 Image Processor
@@ -132,8 +161,14 @@ Image Processor
 
 class ImageProcessor:
     
-    def welcome_image(self):
+    def __init__(self):
         
+        self.welcome_image()
+    
+    def welcome_image(self):
+        """
+        welcome_image creates a new canvas and updates it with the welcome image
+        """        
         # Welcome image path
         self.image = cv2.imread("welcome.png")
         
@@ -142,7 +177,7 @@ class ImageProcessor:
         
         # Create canvas to fit the image
         self.canvas = tkinter.Canvas(g.root, width = width, height = height)
-        self.canvas.grid(row=2, column=0, columnspan=2)
+        self.canvas.grid(row=2, column=0, columnspan=3)
         
         # Convert from BGR to RGB, then to PhotoImage
         self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
@@ -152,18 +187,24 @@ class ImageProcessor:
         self.canvas.create_image(0, 0, image=self.image, anchor=tkinter.NW)
         g.root.geometry(f"{width}x{height}")
         
+        logger.debug("Successfully created a canvas and loaded Welcome image.")
+        
     def create_sliders(self):
+        """
+        create_sliders adds some sliders for image modification and lays them out in a grid
+        """
         
-        print("Creating Sliders")
+        # TODO: Resize Sliders when window resizes & set size as fraction of window size
         
-        # Brightness slider
+        # Brightness Slider
         self.brightness = tkinter.Scale(
                 g.root, 
                 from_=0, 
                 to=100, 
                 label="Brightness",
-                length=200,
-                orient=tkinter.HORIZONTAL
+                length=400,
+                orient=tkinter.HORIZONTAL,
+                command=self.update_image
                 )
         # Sets Brightness to 50 to start
         self.brightness.set(50)
@@ -174,8 +215,9 @@ class ImageProcessor:
                 from_=1, 
                 to=100, 
                 label="Contrast",
-                length=200,
-                orient=tkinter.HORIZONTAL
+                length=400,
+                orient=tkinter.HORIZONTAL,
+                command=self.update_image
                 )        
         
         # Grayscale Slider
@@ -184,58 +226,131 @@ class ImageProcessor:
                 from_=0, 
                 to=1, 
                 label="Grayscale",
-                length=200,
-                orient=tkinter.HORIZONTAL
+                length=400,
+                orient=tkinter.HORIZONTAL,
+                command=self.update_image
                 )     
         
         # Filters Slider
         self.filters = tkinter.Scale(
                 g.root, 
                 from_=1, 
-                to=5, 
+                to=len(Kernels.k_array)-1, 
                 label="Filters",
-                length=200,
-                orient=tkinter.HORIZONTAL
+                length=400,
+                orient=tkinter.HORIZONTAL,
+                command=self.update_image
                 )      
         
+        self.filter_label = tkinter.Label(
+                g.root,
+                text="Current filter:"
+                )
+        
+        logger.debug("Successfully created sliders and label.")
+        
         # Put all the sliders in their grid spots
-        self.brightness.grid(row=0, column=0)
-        self.contrast.grid(row=1, column=0)
-        self.grayscale.grid(row=0, column=1)
-        self.filters.grid(row=1, column=1)
+        self.brightness.grid(row=0, column=0, sticky=tkinter.W)
+        self.contrast.grid(row=1, column=0, sticky=tkinter.W)
+        self.grayscale.grid(row=0, column=1, sticky=tkinter.W)
+        self.filters.grid(row=1, column=1, sticky=tkinter.W)
         
+        # Put the labels in their grid spots
+        self.filter_label.grid(row=0, column=2, sticky=tkinter.W)
         
+        logger.debug("Successfully packed sliders and label into grid.")
 
     def load_image(self, path):
+        """
+        load_image loads whichever filepath was selected in open_dialog
+        """
         
         # TODO: Put a try catch here to catch failed image opens
         
         # OpenCV Test
         # Load image
         print(path)
-        self.image = cv2.imread(path)
+        self.color_original = cv2.imread(path)
+        
+        logger.debug(f"Successfully read image from the filepath: {path}")
+                
+        # Converts to grayscale and saves as gray_original variable
+        self.gray_original = cv2.cvtColor(self.color_original, cv2.COLOR_BGR2GRAY)
+        
+        logger.debug("Successfully created gray_original image.")
         
         # Create sliders
         self.create_sliders()
         
         # Get new image dimensions
-        height, width, no_channels = self.image.shape
+        height, width, no_channels = self.color_original.shape
         
         # Load PhotoImage into existing canvas        
-        self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
+        self.image = cv2.cvtColor(self.color_original, cv2.COLOR_BGR2RGB)
         self.image = Image.fromarray(self.image)
         self.image = ImageTk.PhotoImage(self.image)
+        
+        logger.debug("Successfully created PhotoImage.")
         
         self.canvas.config(width = width, height = height)
         self.canvas.create_image(0, 0, image=self.image, anchor=tkinter.NW)
         g.root.geometry(f"{width}x{height}")
+
+        logger.debug("Successfully created an image on the canvas, and changed window size.")
+
+    def update_canvas:
+        pass
+
+    def update_image(self, var):
+        """
+        update_image modifies the image based on slider values
+        """
+        
+        self.current_grayscale = self.grayscale.get()
+        
+        # Display color or gray original
+        if self.current_grayscale == 0:
+            # Load PhotoImage into existing canvas        
+            self.image = cv2.cvtColor(self.color_original, cv2.COLOR_BGR2RGB)
+            self.image = Image.fromarray(self.image)
+            self.image = ImageTk.PhotoImage(self.image)
+            
+            logger.debug("Successfully created PhotoImage.")
+            
+            self.canvas.create_image(0, 0, image=self.image, anchor=tkinter.NW)
+    
+            logger.debug("Successfully created an image on the canvas, and changed window size.")
+        else:
+            # Load PhotoImage into existing canvas        
+            self.image = cv2.cvtColor(self.gray_original, cv2.COLOR_GRAY2RGB)
+            self.image = Image.fromarray(self.image)
+            self.image = ImageTk.PhotoImage(self.image)
+            
+            logger.debug("Successfully created PhotoImage.")
+            
+            self.canvas.create_image(0, 0, image=self.image, anchor=tkinter.NW)
+    
+            logger.debug("Successfully created an image on the canvas, and changed window size.")            
+            
+        
+        
+"""
+Basic setup and class initialization
+"""
+
+# Logger Setup
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s, -%(levelname)s : %(message)s')
+file_handler = logging.FileHandler('Logs/logs.log')
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
 
 # Create GUI object
 g = Gui()
 
 # Starts the image processor
 ip = ImageProcessor()
-ip.welcome_image()
 
 # Tkinter main loop
 g.root.mainloop()
@@ -305,9 +420,9 @@ while True:
     elif key == ord('s'):
         # Save image
         if grayscale == 0:
-            cv2.imwrite('output\output-{}.png'.format(count), color_modified)
+            cv2.imwrite('Output\output-{}.png'.format(count), color_modified)
         else:
-            cv2.imwrite('output\output-{}.png'.format(count), gray_modified)
+            cv2.imwrite('Output\output-{}.png'.format(count), gray_modified)
         
         # Increment count to avoid overwriting previous saved files
         count +=1
