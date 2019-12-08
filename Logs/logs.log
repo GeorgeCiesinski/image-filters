@@ -147,3 +147,21 @@
 2019-12-07 19:43:00,304 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
 2019-12-07 19:43:02,972 - __main__, -DEBUG : Successfully created PhotoImage.
 2019-12-07 19:43:03,007 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 19:53:25,315 - __main__, -DEBUG : Successfully created a new window.
+2019-12-07 19:53:25,324 - __main__, -DEBUG : Successfully created the base menu.
+2019-12-07 19:53:25,324 - __main__, -DEBUG : Successfully created the File menu.
+2019-12-07 19:53:25,324 - __main__, -DEBUG : Successfully created the Help menu.
+2019-12-07 19:53:25,352 - __main__, -DEBUG : Successfully created a canvas and loaded Welcome image.
+2019-12-07 19:53:34,653 - __main__, -DEBUG : Successfully acquired the filepath: C:/Users/georg/Downloads/cityscape.jpg
+2019-12-07 19:53:34,680 - __main__, -DEBUG : Successfully read image from the filepath: C:/Users/georg/Downloads/cityscape.jpg
+2019-12-07 19:53:34,681 - __main__, -DEBUG : Successfully created gray_original image.
+2019-12-07 19:53:34,683 - __main__, -DEBUG : Successfully created sliders and label.
+2019-12-07 19:53:34,683 - __main__, -DEBUG : Successfully packed sliders and label into grid.
+2019-12-07 19:53:34,714 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 19:53:34,752 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 19:53:34,811 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 19:53:34,846 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 19:53:40,359 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 19:53:40,394 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 19:53:40,958 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 19:53:40,994 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.

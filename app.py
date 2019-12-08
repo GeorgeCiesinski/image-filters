@@ -184,7 +184,10 @@ class ImageProcessor:
         self.image = Image.fromarray(self.image)
         self.image = ImageTk.PhotoImage(self.image)
         
+        # Create an image on the canvas
         self.canvas.create_image(0, 0, image=self.image, anchor=tkinter.NW)
+        
+        # Change window size to match picture
         g.root.geometry(f"{width}x{height}")
         
         logger.debug("Successfully created a canvas and loaded Welcome image.")
@@ -298,7 +301,7 @@ class ImageProcessor:
 
         logger.debug("Successfully created an image on the canvas, and changed window size.")
 
-    def update_canvas:
+    def update_canvas():
         pass
 
     def update_image(self, var):
