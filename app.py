@@ -179,16 +179,8 @@ class ImageProcessor:
         self.canvas = tkinter.Canvas(g.root, width = width, height = height)
         self.canvas.grid(row=2, column=0, columnspan=3)
         
-        # Convert from BGR to RGB, then to PhotoImage
-        self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
-        self.image = Image.fromarray(self.image)
-        self.image = ImageTk.PhotoImage(self.image)
-        
-        # Create an image on the canvas
-        self.canvas.create_image(0, 0, image=self.image, anchor=tkinter.NW)
-        
-        # Change window size to match picture
-        g.root.geometry(f"{width}x{height}")
+        # Convert to PhotoImage and update canvas
+        self.update_canvas_color(self.image)
         
         logger.debug("Successfully created a canvas and loaded Welcome image.")
         
@@ -207,7 +199,7 @@ class ImageProcessor:
                 label="Brightness",
                 length=400,
                 orient=tkinter.HORIZONTAL,
-                command=self.update_image
+                command=self.modify_image
                 )
         # Sets Brightness to 50 to start
         self.brightness.set(50)
@@ -220,7 +212,7 @@ class ImageProcessor:
                 label="Contrast",
                 length=400,
                 orient=tkinter.HORIZONTAL,
-                command=self.update_image
+                command=self.modify_image
                 )        
         
         # Grayscale Slider
@@ -231,18 +223,18 @@ class ImageProcessor:
                 label="Grayscale",
                 length=400,
                 orient=tkinter.HORIZONTAL,
-                command=self.update_image
+                command=self.modify_image
                 )     
         
         # Filters Slider
         self.filters = tkinter.Scale(
                 g.root, 
-                from_=1, 
+                from_=0, 
                 to=len(Kernels.k_array)-1, 
                 label="Filters",
                 length=400,
                 orient=tkinter.HORIZONTAL,
-                command=self.update_image
+                command=self.modify_image
                 )      
         
         self.filter_label = tkinter.Label(
@@ -285,26 +277,38 @@ class ImageProcessor:
         # Create sliders
         self.create_sliders()
         
-        # Get new image dimensions
-        height, width, no_channels = self.color_original.shape
+        self.update_canvas_color(self.color_original)
+
+    def update_canvas_color(self, color_image):
         
-        # Load PhotoImage into existing canvas        
-        self.image = cv2.cvtColor(self.color_original, cv2.COLOR_BGR2RGB)
-        self.image = Image.fromarray(self.image)
-        self.image = ImageTk.PhotoImage(self.image)
+        # Get image dimensions
+        height, width, no_channels = color_image.shape
         
-        logger.debug("Successfully created PhotoImage.")
-        
+        # Update canvas size
         self.canvas.config(width = width, height = height)
-        self.canvas.create_image(0, 0, image=self.image, anchor=tkinter.NW)
+        
+        # Change window size to match image
         g.root.geometry(f"{width}x{height}")
+        
+        # Convert from BGR to RGB, then to PhotoImage
+        self.color_image = cv2.cvtColor(color_image, cv2.COLOR_BGR2RGB)
+        self.color_image = Image.fromarray(self.color_image)
+        self.color_image = ImageTk.PhotoImage(self.color_image)
+        
+        # Create an image on the canvas
+        self.canvas.create_image(0, 0, image=self.color_image, anchor=tkinter.NW)
 
-        logger.debug("Successfully created an image on the canvas, and changed window size.")
-
-    def update_canvas():
-        pass
-
-    def update_image(self, var):
+    def update_canvas_gray(self, gray_image):
+        
+        # Convert from BGR to RGB, then to PhotoImage
+        self.color_image = cv2.cvtColor(gray_image, cv2.COLOR_GRAY2RGB)
+        self.color_image = Image.fromarray(self.color_image)
+        self.color_image = ImageTk.PhotoImage(self.color_image)
+        
+        # Create an image on the canvas
+        self.canvas.create_image(0, 0, image=self.color_image, anchor=tkinter.NW)
+        
+    def modify_image(self, var):
         """
         update_image modifies the image based on slider values
         """
@@ -312,28 +316,11 @@ class ImageProcessor:
         self.current_grayscale = self.grayscale.get()
         
         # Display color or gray original
+        # TODO: Change to color_modified
         if self.current_grayscale == 0:
-            # Load PhotoImage into existing canvas        
-            self.image = cv2.cvtColor(self.color_original, cv2.COLOR_BGR2RGB)
-            self.image = Image.fromarray(self.image)
-            self.image = ImageTk.PhotoImage(self.image)
-            
-            logger.debug("Successfully created PhotoImage.")
-            
-            self.canvas.create_image(0, 0, image=self.image, anchor=tkinter.NW)
-    
-            logger.debug("Successfully created an image on the canvas, and changed window size.")
+            self.update_canvas_color(self.color_original)
         else:
-            # Load PhotoImage into existing canvas        
-            self.image = cv2.cvtColor(self.gray_original, cv2.COLOR_GRAY2RGB)
-            self.image = Image.fromarray(self.image)
-            self.image = ImageTk.PhotoImage(self.image)
-            
-            logger.debug("Successfully created PhotoImage.")
-            
-            self.canvas.create_image(0, 0, image=self.image, anchor=tkinter.NW)
-    
-            logger.debug("Successfully created an image on the canvas, and changed window size.")            
+            self.update_canvas_gray(self.gray_original)    
             
         
         

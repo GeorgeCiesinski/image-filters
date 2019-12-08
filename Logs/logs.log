@@ -165,3 +165,132 @@
 2019-12-07 19:53:40,394 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
 2019-12-07 19:53:40,958 - __main__, -DEBUG : Successfully created PhotoImage.
 2019-12-07 19:53:40,994 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 20:00:54,153 - __main__, -DEBUG : Successfully created a new window.
+2019-12-07 20:00:54,162 - __main__, -DEBUG : Successfully created the base menu.
+2019-12-07 20:00:54,162 - __main__, -DEBUG : Successfully created the File menu.
+2019-12-07 20:00:54,162 - __main__, -DEBUG : Successfully created the Help menu.
+2019-12-07 20:00:54,191 - __main__, -DEBUG : Successfully created a canvas and loaded Welcome image.
+2019-12-07 20:01:05,387 - __main__, -DEBUG : Successfully acquired the filepath: C:/Users/georg/Downloads/cityscape.jpg
+2019-12-07 20:01:05,415 - __main__, -DEBUG : Successfully read image from the filepath: C:/Users/georg/Downloads/cityscape.jpg
+2019-12-07 20:01:05,416 - __main__, -DEBUG : Successfully created gray_original image.
+2019-12-07 20:01:05,417 - __main__, -DEBUG : Successfully created sliders and label.
+2019-12-07 20:01:05,417 - __main__, -DEBUG : Successfully packed sliders and label into grid.
+2019-12-07 20:01:05,448 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 20:01:05,485 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 20:01:05,546 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 20:01:05,582 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 20:01:09,067 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 20:01:09,103 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 20:01:09,550 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 20:01:09,585 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 20:01:10,053 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 20:01:10,090 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 20:01:10,518 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 20:01:10,553 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 20:01:11,913 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 20:01:11,950 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 20:01:12,734 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 20:01:12,770 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 20:01:13,345 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 20:01:13,385 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 20:01:13,934 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 20:01:13,970 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 20:04:09,508 - __main__, -DEBUG : Successfully created a new window.
+2019-12-07 20:04:09,517 - __main__, -DEBUG : Successfully created the base menu.
+2019-12-07 20:04:09,517 - __main__, -DEBUG : Successfully created the File menu.
+2019-12-07 20:04:09,518 - __main__, -DEBUG : Successfully created the Help menu.
+2019-12-07 20:04:47,108 - __main__, -DEBUG : Successfully created a new window.
+2019-12-07 20:04:47,118 - __main__, -DEBUG : Successfully created the base menu.
+2019-12-07 20:04:47,118 - __main__, -DEBUG : Successfully created the File menu.
+2019-12-07 20:04:47,118 - __main__, -DEBUG : Successfully created the Help menu.
+2019-12-07 20:04:47,150 - __main__, -DEBUG : Successfully created a canvas and loaded Welcome image.
+2019-12-07 20:06:49,992 - __main__, -DEBUG : Successfully created a new window.
+2019-12-07 20:06:50,001 - __main__, -DEBUG : Successfully created the base menu.
+2019-12-07 20:06:50,002 - __main__, -DEBUG : Successfully created the File menu.
+2019-12-07 20:06:50,002 - __main__, -DEBUG : Successfully created the Help menu.
+2019-12-07 20:06:50,032 - __main__, -DEBUG : Successfully created a canvas and loaded Welcome image.
+2019-12-07 20:07:28,530 - __main__, -DEBUG : Successfully created a new window.
+2019-12-07 20:07:28,540 - __main__, -DEBUG : Successfully created the base menu.
+2019-12-07 20:07:28,540 - __main__, -DEBUG : Successfully created the File menu.
+2019-12-07 20:07:28,541 - __main__, -DEBUG : Successfully created the Help menu.
+2019-12-07 20:07:28,569 - __main__, -DEBUG : Successfully created a canvas and loaded Welcome image.
+2019-12-07 20:12:50,653 - __main__, -DEBUG : Successfully created a new window.
+2019-12-07 20:12:50,662 - __main__, -DEBUG : Successfully created the base menu.
+2019-12-07 20:12:50,662 - __main__, -DEBUG : Successfully created the File menu.
+2019-12-07 20:12:50,662 - __main__, -DEBUG : Successfully created the Help menu.
+2019-12-07 20:13:42,905 - __main__, -DEBUG : Successfully created a new window.
+2019-12-07 20:13:42,914 - __main__, -DEBUG : Successfully created the base menu.
+2019-12-07 20:13:42,914 - __main__, -DEBUG : Successfully created the File menu.
+2019-12-07 20:13:42,915 - __main__, -DEBUG : Successfully created the Help menu.
+2019-12-07 20:13:42,943 - __main__, -DEBUG : Successfully created a canvas and loaded Welcome image.
+2019-12-07 20:15:47,697 - __main__, -DEBUG : Successfully created a new window.
+2019-12-07 20:15:47,706 - __main__, -DEBUG : Successfully created the base menu.
+2019-12-07 20:15:47,707 - __main__, -DEBUG : Successfully created the File menu.
+2019-12-07 20:15:47,707 - __main__, -DEBUG : Successfully created the Help menu.
+2019-12-07 20:15:47,736 - __main__, -DEBUG : Successfully created a canvas and loaded Welcome image.
+2019-12-07 20:15:57,371 - __main__, -DEBUG : Successfully acquired the filepath: C:/Users/georg/Downloads/cityscape.jpg
+2019-12-07 20:15:57,399 - __main__, -DEBUG : Successfully read image from the filepath: C:/Users/georg/Downloads/cityscape.jpg
+2019-12-07 20:15:57,401 - __main__, -DEBUG : Successfully created gray_original image.
+2019-12-07 20:15:57,402 - __main__, -DEBUG : Successfully created sliders and label.
+2019-12-07 20:15:57,402 - __main__, -DEBUG : Successfully packed sliders and label into grid.
+2019-12-07 20:15:57,470 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 20:15:57,525 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 20:15:57,557 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 20:15:58,961 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 20:15:58,993 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 20:15:59,619 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 20:15:59,652 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 20:18:31,794 - __main__, -DEBUG : Successfully created a new window.
+2019-12-07 20:18:31,803 - __main__, -DEBUG : Successfully created the base menu.
+2019-12-07 20:18:31,804 - __main__, -DEBUG : Successfully created the File menu.
+2019-12-07 20:18:31,804 - __main__, -DEBUG : Successfully created the Help menu.
+2019-12-07 20:18:31,833 - __main__, -DEBUG : Successfully created a canvas and loaded Welcome image.
+2019-12-07 20:18:41,434 - __main__, -DEBUG : Successfully acquired the filepath: C:/Users/georg/Downloads/cityscape.jpg
+2019-12-07 20:18:41,461 - __main__, -DEBUG : Successfully read image from the filepath: C:/Users/georg/Downloads/cityscape.jpg
+2019-12-07 20:18:41,463 - __main__, -DEBUG : Successfully created gray_original image.
+2019-12-07 20:18:41,464 - __main__, -DEBUG : Successfully created sliders and label.
+2019-12-07 20:18:41,464 - __main__, -DEBUG : Successfully packed sliders and label into grid.
+2019-12-07 20:18:42,785 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 20:18:42,818 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 20:19:14,675 - __main__, -DEBUG : Successfully created a new window.
+2019-12-07 20:19:14,684 - __main__, -DEBUG : Successfully created the base menu.
+2019-12-07 20:19:14,684 - __main__, -DEBUG : Successfully created the File menu.
+2019-12-07 20:19:14,684 - __main__, -DEBUG : Successfully created the Help menu.
+2019-12-07 20:19:14,713 - __main__, -DEBUG : Successfully created a canvas and loaded Welcome image.
+2019-12-07 20:19:26,371 - __main__, -DEBUG : Successfully acquired the filepath: C:/Users/georg/Downloads/cityscape.jpg
+2019-12-07 20:19:26,405 - __main__, -DEBUG : Successfully read image from the filepath: C:/Users/georg/Downloads/cityscape.jpg
+2019-12-07 20:19:26,406 - __main__, -DEBUG : Successfully created gray_original image.
+2019-12-07 20:19:26,408 - __main__, -DEBUG : Successfully created sliders and label.
+2019-12-07 20:19:26,408 - __main__, -DEBUG : Successfully packed sliders and label into grid.
+2019-12-07 20:20:17,394 - __main__, -DEBUG : Successfully created a new window.
+2019-12-07 20:20:17,402 - __main__, -DEBUG : Successfully created the base menu.
+2019-12-07 20:20:17,403 - __main__, -DEBUG : Successfully created the File menu.
+2019-12-07 20:20:17,403 - __main__, -DEBUG : Successfully created the Help menu.
+2019-12-07 20:20:17,431 - __main__, -DEBUG : Successfully created a canvas and loaded Welcome image.
+2019-12-07 20:20:26,574 - __main__, -DEBUG : Successfully acquired the filepath: C:/Users/georg/Downloads/cityscape.jpg
+2019-12-07 20:20:26,604 - __main__, -DEBUG : Successfully read image from the filepath: C:/Users/georg/Downloads/cityscape.jpg
+2019-12-07 20:20:26,606 - __main__, -DEBUG : Successfully created gray_original image.
+2019-12-07 20:20:26,607 - __main__, -DEBUG : Successfully created sliders and label.
+2019-12-07 20:20:26,608 - __main__, -DEBUG : Successfully packed sliders and label into grid.
+2019-12-07 20:20:28,176 - __main__, -DEBUG : Successfully created PhotoImage.
+2019-12-07 20:20:28,214 - __main__, -DEBUG : Successfully created an image on the canvas, and changed window size.
+2019-12-07 20:22:28,399 - __main__, -DEBUG : Successfully created a new window.
+2019-12-07 20:22:28,408 - __main__, -DEBUG : Successfully created the base menu.
+2019-12-07 20:22:28,409 - __main__, -DEBUG : Successfully created the File menu.
+2019-12-07 20:22:28,409 - __main__, -DEBUG : Successfully created the Help menu.
+2019-12-07 20:22:28,438 - __main__, -DEBUG : Successfully created a canvas and loaded Welcome image.
+2019-12-07 20:22:37,513 - __main__, -DEBUG : Successfully acquired the filepath: C:/Users/georg/Downloads/cityscape.jpg
+2019-12-07 20:22:37,539 - __main__, -DEBUG : Successfully read image from the filepath: C:/Users/georg/Downloads/cityscape.jpg
+2019-12-07 20:22:37,541 - __main__, -DEBUG : Successfully created gray_original image.
+2019-12-07 20:22:37,543 - __main__, -DEBUG : Successfully created sliders and label.
+2019-12-07 20:22:37,543 - __main__, -DEBUG : Successfully packed sliders and label into grid.
+2019-12-07 20:25:20,166 - __main__, -DEBUG : Successfully created a new window.
+2019-12-07 20:25:20,174 - __main__, -DEBUG : Successfully created the base menu.
+2019-12-07 20:25:20,175 - __main__, -DEBUG : Successfully created the File menu.
+2019-12-07 20:25:20,175 - __main__, -DEBUG : Successfully created the Help menu.
+2019-12-07 20:25:20,204 - __main__, -DEBUG : Successfully created a canvas and loaded Welcome image.
+2019-12-07 20:25:29,809 - __main__, -DEBUG : Successfully acquired the filepath: C:/Users/georg/Downloads/cityscape.jpg
+2019-12-07 20:25:29,835 - __main__, -DEBUG : Successfully read image from the filepath: C:/Users/georg/Downloads/cityscape.jpg
+2019-12-07 20:25:29,837 - __main__, -DEBUG : Successfully created gray_original image.
+2019-12-07 20:25:29,839 - __main__, -DEBUG : Successfully created sliders and label.
+2019-12-07 20:25:29,839 - __main__, -DEBUG : Successfully packed sliders and label into grid.
