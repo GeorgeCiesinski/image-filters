@@ -79,12 +79,9 @@ class Gui:
         
         # Creates the menu bar
         self.create_menu()
-
-    # Dummy function that does nothing (as a dummy event handler for Trackbars)
-    def dummy():
-        print("Dummy method.")
         
     def create_window(self):
+        
         """
         create_window creates a new tkinter window including basic setup
         """
@@ -99,6 +96,7 @@ class Gui:
         logger.debug("Successfully created a new window.")
 
     def create_menu(self):
+        
         """
         create_menu creates the menu and submenus inside of it
         """
@@ -135,37 +133,17 @@ class Gui:
 
     # Opens an open_dialog allowing users to select a file they want to open
     def open_dialog(self):
+        
         """
         open_dialog creates a new window allowing the user to get the filepath of the file they want to open
         """
         
-        self.root.filename = filedialog.askopenfilename(
-            initialdir="/", 
-            title = "Select a File", 
-            filetypes=(
-                    (".bmp files", "*.bmp"),
-                    (".jpg files", "*jpg"), 
-                    (".png files", "*.png"), 
-                    (".tiff files", "*.tiff"),
-                    ("All files", "*.*")
-                    )
-            )
+        logger.debug("User has opened the open_dialog.")
         
-        logger.debug(f"Successfully acquired the filepath: {self.root.filename}")
-        
-        if len(self.root.filename) > 0:
-            ip.load_image(self.root.filename)
-
-    def save_dialog(self):
-        
-        if ip.color_modified == None or ip.gray_modified == None:    
-            tkinter.messagebox.showinfo("Image Filters: Unable to save file", "There is no file to save. Please open and modify a file first.")
-        
-        else: 
-        
-            self.root.savepath = filedialog.asksaveasfilename(
-                initialdir="/",
-                title="Save file",
+        try:
+            self.root.filename = filedialog.askopenfilename(
+                initialdir="/", 
+                title = "Select a File", 
                 filetypes=(
                         (".bmp files", "*.bmp"),
                         (".jpg files", "*jpg"), 
@@ -174,8 +152,61 @@ class Gui:
                         ("All files", "*.*")
                         )
                 )
+        except:
+            logger.exception(f"Failed to acquire the filepath: {self.root.filename}")
+            raise
+        else:
+            logger.debug(f"Successfully acquired the filepath: {self.root.filename}")
+        
+        # TODO: Check to make sure filepath ends in compatible format extension
+        
+        if len(self.root.filename) > 0:
+            
+            # Calls ip.load_image to open the specified image file
+            logger.debug("Calling ip.load_image.")
+            ip.load_image(self.root.filename)
+
+    def save_dialog(self):
+        
+        """
+        save_dialog creates a new window allowing user to specify the save file path for the modified file
+        """
+        
+        logger.debug("User has opened the save_dialog.")
+        
+        #Check if a file has actually been opened        
+        if ip.image_opened == False:
+            
+            # Warn user that there is no file open and file cannot be saved
+            tkinter.messagebox.showinfo("Image Filters: Unable to save file", "There is no file to save. Please open and modify a file first.")
+        
+        else: 
+        
+            try: 
+                # Ask user to select file save location
+                self.root.savepath = filedialog.asksaveasfilename(
+                    initialdir="/",
+                    title="Save file",
+                    filetypes=(
+                            (".bmp files", "*.bmp"),
+                            (".jpg files", "*jpg"), 
+                            (".png files", "*.png"), 
+                            (".tiff files", "*.tiff"),
+                            ("All files", "*.*")
+                            )
+                    )
+            except:
+                logger.exception(f"Failed to acquire the save path: {self.root.filename}")
+                raise
+            else:
+                logger.debug(f"Successfully acquired the save path: {self.root.filename}")
+                
+            # Calls ip.save_image to save the image at specified path
+            logger.debug("Calling ip.save_image.")
+            ip.save_image(self.root.savepath)
 
     def close_window(self):
+        
         """
         close_window destroys the tkinter window and closes the program
         """
@@ -214,9 +245,8 @@ class ImageProcessor:
         # Convert to PhotoImage and update canvas
         self.update_canvas_color(self.image)
         
-        # Creates empty modified image variables
-        self.color_modified = None
-        self.gray_modified = None
+        # Creates image opened variable
+        self.image_opened = False
         
         logger.debug("Successfully created a canvas and loaded Welcome image.")
         
@@ -300,6 +330,7 @@ class ImageProcessor:
         logger.debug("Successfully packed sliders and label into grid.")
 
     def load_image(self, path):
+        
         """
         load_image loads whichever filepath was selected in open_dialog
         """
@@ -309,9 +340,21 @@ class ImageProcessor:
         # OpenCV Test
         # Load image
         print(path)
-        self.color_original = cv2.imread(path)
         
-        logger.debug(f"Successfully read image from the filepath: {path}")
+        try:
+        
+            self.color_original = cv2.imread(path)
+        
+        except:
+            
+            logger.debug(f"Failed to open the image from the path: {path}")
+            raise
+            
+        else:
+            
+            logger.debug(f"Successfully read image from the filepath: {path}")
+            # Sets image_opened to True
+            self.image_opened = True
                 
         # Converts to grayscale and saves as gray_original variable
         self.gray_original = cv2.cvtColor(self.color_original, cv2.COLOR_BGR2GRAY)
@@ -322,6 +365,29 @@ class ImageProcessor:
         self.create_sliders()
         
         self.modify_image(self.color_original)
+
+    def save_image(self, path):
+        
+        """
+        Save an image to the specified path
+        """
+        
+        if self.current_grayscale == 0:
+            
+            try:
+                cv2.imwrite(path, self.color_modified)
+            except:
+                logger.debug(f"Failed to save color_modified to {path}")
+            else:
+                logger.debug(f"Successfully saved color_modified to {path}")    
+        
+        else: 
+            try:
+                cv2.imwrite(path, self.gray_modified)
+            except:
+                logger.debug(f"Failed to save gray_modified to {path}")
+            else:
+                logger.debug(f"Successfully saved gray_modified to {path}")
 
     def modify_image(self, var):
         
@@ -405,6 +471,10 @@ class ImageProcessor:
 
     def update_canvas_color(self, color_image):
         
+        """
+        update_canvas_color converts BGR to RGB and then PhotoImage before displaying on canvas
+        """
+        
         # Get image dimensions
         height, width, no_channels = color_image.shape
         
@@ -423,6 +493,10 @@ class ImageProcessor:
         self.canvas.create_image(0, 0, image=self.color_image, anchor=tkinter.NW)
 
     def update_canvas_gray(self, gray_image):
+        
+        """
+        update_canvas_gray converts Gray to RGB and then PhotoImage before displaying on canvas
+        """
         
         # Convert from BGR to RGB, then to PhotoImage
         self.color_image = cv2.cvtColor(gray_image, cv2.COLOR_GRAY2RGB)
