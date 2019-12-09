@@ -108,19 +108,25 @@ class Gui:
         
         # File Menu
         self.fileMenu = tkinter.Menu(self.menu)
-        self.menu.add_cascade(label="File", menu = self.fileMenu)
+        self.menu.add_cascade(label="File", underline=0, menu = self.fileMenu)
         self.fileMenu.add_command(
                 label="Open", 
-                command = self.open_dialog
+                underline=1,
+                command=self.open_dialog,
+                accelerator="Ctrl+O"
                 )
         self.fileMenu.add_command(
                 label="Save", 
-                command = self.save_dialog
+                underline=1,
+                command=self.save_dialog,
+                accelerator="Ctrl+S"
                 )
         self.fileMenu.add_separator()
         self.fileMenu.add_command(
                 label="Quit", 
-                command = self.close_window
+                underline=1,
+                command=self.close_window,
+                accelerator="Ctrl+Q"
                 )
         
         logger.debug("Successfully created the File menu.")
