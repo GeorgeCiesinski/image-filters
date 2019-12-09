@@ -9,6 +9,7 @@ import cv2
 import numpy as np
 import tkinter
 from tkinter import filedialog
+from tkinter import messagebox
 from PIL import Image
 from PIL import ImageTk
 import logging
@@ -54,12 +55,20 @@ class Kernels:
             gaussian_kernel2, 
             box_kernel
             ]
-
-"""
-tkinter GUI
-"""
+    
+    k_name = [
+            "Identity Kernel",
+            "Sharpen Kernel",
+            "Gaussian Kernel 1",
+            "Gaussian Kernel 2",
+            "Box Kernel",
+            ]
 
 class Gui:
+    
+    """
+    tkinter GUI
+    """
     
     # TODO: Create save dialog
     
@@ -108,7 +117,7 @@ class Gui:
                 )
         self.fileMenu.add_command(
                 label="Save", 
-                command = self.dummy
+                command = self.save_dialog
                 )
         self.fileMenu.add_separator()
         self.fileMenu.add_command(
@@ -134,8 +143,10 @@ class Gui:
             initialdir="/", 
             title = "Select a File", 
             filetypes=(
-                    ("Png files", "*.png"), 
-                    ("Jpg files", "*jpg"), 
+                    (".bmp files", "*.bmp"),
+                    (".jpg files", "*jpg"), 
+                    (".png files", "*.png"), 
+                    (".tiff files", "*.tiff"),
                     ("All files", "*.*")
                     )
             )
@@ -144,6 +155,25 @@ class Gui:
         
         if len(self.root.filename) > 0:
             ip.load_image(self.root.filename)
+
+    def save_dialog(self):
+        
+        if ip.color_modified == None or ip.gray_modified == None:    
+            tkinter.messagebox.showinfo("Image Filters: Unable to save file", "There is no file to save. Please open and modify a file first.")
+        
+        else: 
+        
+            self.root.savepath = filedialog.asksaveasfilename(
+                initialdir="/",
+                title="Save file",
+                filetypes=(
+                        (".bmp files", "*.bmp"),
+                        (".jpg files", "*jpg"), 
+                        (".png files", "*.png"), 
+                        (".tiff files", "*.tiff"),
+                        ("All files", "*.*")
+                        )
+                )
 
     def close_window(self):
         """
@@ -166,9 +196,11 @@ class ImageProcessor:
         self.welcome_image()
     
     def welcome_image(self):
+        
         """
         welcome_image creates a new canvas and updates it with the welcome image
-        """        
+        """
+        
         # Welcome image path
         self.image = cv2.imread("welcome.png")
         
@@ -182,9 +214,14 @@ class ImageProcessor:
         # Convert to PhotoImage and update canvas
         self.update_canvas_color(self.image)
         
+        # Creates empty modified image variables
+        self.color_modified = None
+        self.gray_modified = None
+        
         logger.debug("Successfully created a canvas and loaded Welcome image.")
         
     def create_sliders(self):
+        
         """
         create_sliders adds some sliders for image modification and lays them out in a grid
         """
@@ -237,9 +274,15 @@ class ImageProcessor:
                 command=self.modify_image
                 )      
         
+        # Kernel Labels
         self.filter_label = tkinter.Label(
                 g.root,
-                text="Current filter:"
+                text="Current Convolution Filter:"
+                )
+        
+        self.filter_name_label = tkinter.Label(
+                g.root,
+                text=""
                 )
         
         logger.debug("Successfully created sliders and label.")
@@ -252,6 +295,7 @@ class ImageProcessor:
         
         # Put the labels in their grid spots
         self.filter_label.grid(row=0, column=2, sticky=tkinter.W)
+        self.filter_name_label.grid(row=1, column=2, sticky=tkinter.W)
         
         logger.debug("Successfully packed sliders and label into grid.")
 
@@ -277,7 +321,87 @@ class ImageProcessor:
         # Create sliders
         self.create_sliders()
         
-        self.update_canvas_color(self.color_original)
+        self.modify_image(self.color_original)
+
+    def modify_image(self, var):
+        
+        """
+        update_image modifies the image based on slider values
+        """
+        
+        # Get trackbar values
+        self.get_trackbars()
+        
+        # Apply kernels
+        self.apply_kernels()
+        
+        # Apply brightness and contrast
+        self.apply_brightness_contrast()
+        
+        # Display color or gray original
+        # TODO: Change to color_modified
+        if self.current_grayscale == 0:
+            self.update_canvas_color(self.color_modified)
+        else:
+            self.update_canvas_gray(self.gray_modified)    
+
+    def get_trackbars(self):
+        
+        """
+        Gets the trackbar values
+        """
+        
+        # Brightness
+        self.current_brightness = self.brightness.get()
+        
+        # Contrast
+        self.current_contrast = self.contrast.get()
+        
+        # Grayscale
+        self.current_grayscale = self.grayscale.get()
+
+        # Filters
+        self.current_filters = self.filters.get()
+        
+    def apply_kernels(self):
+        
+        """
+        Applies the kernels to image
+        """
+        
+        kernel_idx = self.current_filters
+        
+        # apply the filters
+        self.color_kernel = cv2.filter2D(self.color_original, -1, Kernels.k_array[kernel_idx])
+        self.gray_kernel = cv2.filter2D(self.gray_original, -1, Kernels.k_array[kernel_idx])
+        
+        self.filter_name_label.configure(text=Kernels.k_name[self.current_filters])
+        
+    def apply_brightness_contrast(self):
+        
+        """
+        Apply the brightness and contrast
+        dst = cv2.addWeighted(src1, alpha, src2, beta, gamma)
+        dst = cv2.addWeighted(image, contrast, zeros_image, 0, brightness) || src2 must be image of 0's, so we use np.zeros_like to do this
+        """
+        
+        # Applies brightness and contrast to color image
+        self.color_modified = cv2.addWeighted(
+                self.color_kernel, 
+                self.current_contrast, 
+                np.zeros_like(self.color_original), 
+                0, 
+                self.current_brightness - 50
+                )
+        
+        # Applies brightness and contrast to gray image
+        self.gray_modified = cv2.addWeighted(
+                self.gray_kernel, 
+                self.current_contrast, 
+                np.zeros_like(self.gray_original), 
+                0, 
+                self.current_brightness - 50)
+        
 
     def update_canvas_color(self, color_image):
         
@@ -308,21 +432,6 @@ class ImageProcessor:
         # Create an image on the canvas
         self.canvas.create_image(0, 0, image=self.color_image, anchor=tkinter.NW)
         
-    def modify_image(self, var):
-        """
-        update_image modifies the image based on slider values
-        """
-        
-        self.current_grayscale = self.grayscale.get()
-        
-        # Display color or gray original
-        # TODO: Change to color_modified
-        if self.current_grayscale == 0:
-            self.update_canvas_color(self.color_original)
-        else:
-            self.update_canvas_gray(self.gray_original)    
-            
-        
         
 """
 Basic setup and class initialization
@@ -344,87 +453,3 @@ ip = ImageProcessor()
 
 # Tkinter main loop
 g.root.mainloop()
-
-
-
-
-    
-"""
-Read in an image and make a grayscale copy
-"""
-
-# TODO: Add button to open a specific image using relative paths
-# Reads image in folder and assigns it to color_original variable
-color_original = cv2.imread('cityscape.jpg')
-# Converts to grayscale and saves as gray_original variable
-gray_original = cv2.cvtColor(color_original, cv2.COLOR_BGR2GRAY)
-
-"""
-Create the UI (Window and trackbars)
-"""
-
-cv2.namedWindow('Image Filters')
-# TODO: Make trackbars the same width in Linux...
-# Arguments: trackbarName, windowName, value (initial), count (max value), onChange (event handler)
-# Contrast Trackbar
-cv2.createTrackbar('contrast', 'Image Filters', 1, 100, g.dummy)
-# Brightness Trackbar - initial value is 50 to compensate for negative brightness (cv doesn't allow negative values)
-cv2.createTrackbar('brightness', 'Image Filters', 50, 100, g.dummy)
-# Filter Trackbar
-cv2.createTrackbar('filters', 'Image Filters', 0, len(Kernels.k_array)-1, g.dummy)
-# Grayscale Trackbar - switch only: values 0 & 1.
-cv2.createTrackbar('grayscale', 'Image Filters', 0, 1, g.dummy)
-
-# Count for saving images
-count = 1
-
-# Main UI Loop
-# For each iteration: Pulls trackbar values, applies any filters, waits for keypress, and shows image
-while True:
-    # read all of the trackbar values
-    grayscale = cv2.getTrackbarPos('grayscale', 'Image Filters')
-    contrast = cv2.getTrackbarPos('contrast', 'Image Filters')
-    brightness = cv2.getTrackbarPos('brightness', 'Image Filters')
-    # kernel index
-    kernel_idx = cv2.getTrackbarPos('filters', 'Image Filters')
-    
-    # apply the filters
-    color_modified = cv2.filter2D(color_original, -1, Kernels.k_array[kernel_idx])
-    gray_modified = cv2.filter2D(gray_original, -1, Kernels.k_array[kernel_idx])
-    
-    """
-    Apply the brightness and contrast
-    dst = cv2.addWeighted(src1, alpha, src2, beta, gamma)
-    dst = cv2.addWeighted(image, contrast, zeros_image, 0, brightness) || src2 must be image of 0's, so we use np.zeros_like to do this
-    """
-    color_modified = cv2.addWeighted(color_modified, contrast, np.zeros_like(color_original), 0, brightness - 50)
-    gray_modified = cv2.addWeighted(gray_modified, contrast, np.zeros_like(gray_original), 0, brightness - 50)
-    
-    # Wait for keypress (100 milliseconds)
-    key = cv2.waitKey(100)
-    
-    # ord converts character into integer, compares it to the integer value "key"
-    # If key is q, program will quit
-    if key == ord('q'):
-        break
-    elif key == ord('s'):
-        # Save image
-        if grayscale == 0:
-            cv2.imwrite('Output\output-{}.png'.format(count), color_modified)
-        else:
-            cv2.imwrite('Output\output-{}.png'.format(count), gray_modified)
-        
-        # Increment count to avoid overwriting previous saved files
-        count +=1
-    
-    # Show the image
-    if grayscale == 0:
-        # Show color as trackbar is set to color
-        cv2.imshow('Image Filters', color_modified)
-    else:
-        cv2.imshow('Image Filters', gray_modified)
-
-    # Todo: If x is pressed, app should quit the same way as with q
-
-# Window Cleanup
-cv2.destroyAllWindows()
