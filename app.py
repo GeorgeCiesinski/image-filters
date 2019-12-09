@@ -86,6 +86,9 @@ class Gui:
         create_window creates a new tkinter window including basic setup
         """
         
+        # TODO: When window resizes, resize all widgets. Prevent window from becoming too small
+        # TODO: Populate help menu with link to the repository and log export tool. Maybe even a help window.
+        
         # Main tkinter window
         self.root = tkinter.Tk()
         
@@ -144,6 +147,9 @@ class Gui:
         open_dialog creates a new window allowing the user to get the filepath of the file they want to open
         """
         
+        # TODO: Make sure file extension is valid
+        # TODO: Change the options so that All Files is primary, and multiple extensions are listed onder each menu option
+        
         logger.debug("User has opened the open_dialog.")
         
         try:
@@ -177,6 +183,9 @@ class Gui:
         """
         save_dialog creates a new window allowing user to specify the save file path for the modified file
         """
+        
+        # TODO: Make sure user specified a file extension. Pop up message box advising to use an available extension
+        # TODO: Automatically populate the file extension?
         
         logger.debug("User has opened the save_dialog.")
         
@@ -237,6 +246,8 @@ class ImageProcessor:
         """
         welcome_image creates a new canvas and updates it with the welcome image
         """
+        
+        # TODO: Update welcome_image so that it looks more professional
         
         # Welcome image path
         self.image = cv2.imread("welcome.png")
@@ -309,6 +320,9 @@ class ImageProcessor:
                 orient=tkinter.HORIZONTAL,
                 command=self.modify_image
                 )      
+        
+        # TODO: Make label text larger and easier to read.
+        # TODO: Replace second widget with some kind of input field or something.
         
         # Kernel Labels
         self.filter_label = tkinter.Label(
