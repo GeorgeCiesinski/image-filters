@@ -80,6 +80,9 @@ class Gui:
         # Creates the menu bar
         self.create_menu()
         
+    def dummy(self):
+        pass
+    
     def create_window(self):
         
         """
@@ -87,7 +90,6 @@ class Gui:
         """
         
         # TODO: When window resizes, resize all widgets. Prevent window from becoming too small
-        # TODO: Populate help menu with link to the repository and log export tool. Maybe even a help window.
         
         # Main tkinter window
         self.root = tkinter.Tk()
@@ -137,6 +139,21 @@ class Gui:
         # Help Menu
         self.helpMenu = tkinter.Menu(self.menu)
         self.menu.add_cascade(label="Help", menu=self.helpMenu)
+        self.helpMenu.add_command(
+                label="How to use",
+                # TODO: Pop up message box with basic instructions
+                command=self.dummy
+                )
+        self.helpMenu.add_command(
+                label="Export Logs",
+                # TODO: Open log directory
+                command=self.dummy
+                )
+        self.helpMenu.add_command(
+                label="Repository & Documentation",
+                # TODO: Link to repository
+                command=self.dummy
+                )
         
         logger.debug("Successfully created the Help menu.")
 
@@ -220,6 +237,16 @@ class Gui:
             logger.debug("Calling ip.save_image.")
             ip.save_image(self.root.savepath)
 
+    def help_dialog(self):
+        
+        """
+        
+        """
+        
+        help_instructions = "Help instructions"
+        
+        tkinter.messagebox.showinfo(help_instructions)
+    
     def close_window(self):
         
         """
