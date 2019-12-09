@@ -141,8 +141,7 @@ class Gui:
         self.menu.add_cascade(label="Help", menu=self.helpMenu)
         self.helpMenu.add_command(
                 label="How to use",
-                # TODO: Pop up message box with basic instructions
-                command=self.dummy
+                command=self.how_to
                 )
         self.helpMenu.add_command(
                 label="Export Logs",
@@ -236,16 +235,6 @@ class Gui:
             # Calls ip.save_image to save the image at specified path
             logger.debug("Calling ip.save_image.")
             ip.save_image(self.root.savepath)
-
-    def help_dialog(self):
-        
-        """
-        
-        """
-        
-        help_instructions = "Help instructions"
-        
-        tkinter.messagebox.showinfo(help_instructions)
     
     def close_window(self):
         
@@ -257,6 +246,37 @@ class Gui:
         
         # Destroys window and closes program
         self.root.destroy()
+        
+    def how_to(self):
+        
+        """
+        Shows a how to use screen in a message box
+        """
+        
+        how_to_instructions = """HOW TO USE:
+            
+1. Open a file using File > Open, or Ctrl+O
+2. Modify image using sliders
+3. Save modified file using File > Save, or Ctrl+S
+
+In case of any bugs, export the logs and submit them as a bug at the repository which can be found by clicking: 
+
+Help > Repository & Documentation.
+"""
+        
+        tkinter.messagebox.showinfo("Instructions", how_to_instructions)
+
+    def export_logs(self):
+        
+        # TODO: Grab the latest few logs and zip them into a file on the desktop
+        pass
+        
+    def repo_docs(self):
+        
+        # TODO: Create a new window, advise user they are about to go to the repository/documentation link and if they want to continue.
+        # TODO: Close new window if no clicked. Close window and open link if yes clicked. 
+        pass
+    
 
 """
 Image Processor
@@ -559,6 +579,7 @@ Basic setup and class initialization
 """
 
 # Logger Setup
+# TODO: Create several logs to track past several attempts to use app (5 - 10 tops)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(name)s, -%(levelname)s : %(message)s')
