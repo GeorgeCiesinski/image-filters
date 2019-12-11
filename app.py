@@ -5,6 +5,7 @@ Created on Mon Dec  2 20:37:51 2019
 @author: George Ciesinski
 """
 
+import os
 import cv2
 import numpy as np
 import tkinter
@@ -13,6 +14,7 @@ from tkinter import messagebox
 from PIL import Image
 from PIL import ImageTk
 import logging
+import webbrowser
 
 
 class Kernels:
@@ -40,7 +42,7 @@ class Kernels:
     
     gaussian_kernel2 = cv2.getGaussianKernel(5, 0)
     
-    # also known as the averaging kernel (takes average of pixel values in the window)
+    # Averaging kernel (takes average of pixel values in the window)
     box_kernel = np.array([
             [1, 1, 1], 
             [1, 1, 1], 
@@ -56,6 +58,7 @@ class Kernels:
             box_kernel
             ]
     
+    # Kernel names (mirrors above array)
     k_name = [
             "Identity Kernel",
             "Sharpen Kernel",
@@ -70,8 +73,6 @@ class Gui:
     tkinter GUI
     """
     
-    # TODO: Create save dialog
-    
     def __init__(self):
         
         # Create the window
@@ -80,6 +81,10 @@ class Gui:
         # Creates the menu bar
         self.create_menu()
         
+    # TODO: Delete once no further use exists for this
+    def dummy(self):
+        pass
+    
     def create_window(self):
         
         """
@@ -87,14 +92,13 @@ class Gui:
         """
         
         # TODO: When window resizes, resize all widgets. Prevent window from becoming too small
-        # TODO: Populate help menu with link to the repository and log export tool. Maybe even a help window.
         
         # Main tkinter window
         self.root = tkinter.Tk()
         
         # Window Setup
         self.root.title("Image Filters")
-        self.root.geometry("800x400")
+        self.root.geometry("400x400")
         
         logger.debug("Successfully created a new window.")
 
@@ -137,6 +141,19 @@ class Gui:
         # Help Menu
         self.helpMenu = tkinter.Menu(self.menu)
         self.menu.add_cascade(label="Help", menu=self.helpMenu)
+        self.helpMenu.add_command(
+                label="How to use",
+                command=self.how_to
+                )
+        self.helpMenu.add_command(
+                label="Open Logs Folder",
+                # TODO: Open log directory
+                command=self.show_logs
+                )
+        self.helpMenu.add_command(
+                label="Repository & Documentation",
+                command=self.repo_docs
+                )
         
         logger.debug("Successfully created the Help menu.")
 
@@ -157,11 +174,11 @@ class Gui:
                 initialdir="/", 
                 title = "Select a File", 
                 filetypes=(
+                        ("All files", "*.*"),
                         (".bmp files", "*.bmp"),
                         (".jpg files", "*jpg"), 
                         (".png files", "*.png"), 
-                        (".tiff files", "*.tiff"),
-                        ("All files", "*.*")
+                        (".tiff files", "*.tiff")
                         )
                 )
         except:
@@ -203,11 +220,11 @@ class Gui:
                     initialdir="/",
                     title="Save file",
                     filetypes=(
+                            ("All files", "*.*"),
                             (".bmp files", "*.bmp"),
                             (".jpg files", "*jpg"), 
                             (".png files", "*.png"), 
-                            (".tiff files", "*.tiff"),
-                            ("All files", "*.*")
+                            (".tiff files", "*.tiff")
                             )
                     )
             except:
@@ -219,7 +236,7 @@ class Gui:
             # Calls ip.save_image to save the image at specified path
             logger.debug("Calling ip.save_image.")
             ip.save_image(self.root.savepath)
-
+    
     def close_window(self):
         
         """
@@ -230,6 +247,106 @@ class Gui:
         
         # Destroys window and closes program
         self.root.destroy()
+        
+    def how_to(self):
+        
+        """
+        Shows a how to use screen in a message box
+        """
+        
+        how_to_instructions = """HOW TO USE:
+            
+1. Open a file using File > Open, or Ctrl+O
+2. Modify image using sliders
+3. Save modified file using File > Save, or Ctrl+S
+
+In case of any bugs, export the logs and submit them as a bug at the repository which can be found by clicking: 
+
+Help > Repository & Documentation.
+"""
+        
+        tkinter.messagebox.showinfo("Instructions", how_to_instructions)
+
+    def show_logs(self):
+        
+        # Export Logs
+        print("Exporting logs")
+        pass
+        
+    def repo_docs(self):
+        
+        """
+        repo_docs opens a new window advising user that they are about to visit the repository link.
+        If the user clicks yes, it goes to url and closes window. If they click no, it simply closes
+        the window.
+        """
+        
+        # TODO: Improve window look
+    
+        # Repository URL
+        self.repo_url = "https://github.com/GeorgeCiesinski/image-filters"
+    
+        # Create new window
+        self.links = tkinter.Tk()
+        
+        # Window Setup
+        self.links.title("Repository & Documentation")
+        self.links.geometry("320x150")
+        
+        # Create Labels
+        self.open_link_label = tkinter.Label(
+                self.links,
+                text="You are about to open the project repository link:"
+                )
+        self.link_url_label = tkinter.Label(
+                self.links,
+                text=self.repo_url
+                )
+        self.empty = tkinter.Label(
+                self.links,
+                text=""
+                )
+        
+        # Create Buttons
+        self.yes_button = tkinter.Button(
+                self.links,
+                text="YES",
+                width=6,
+                height=1,
+                bd=4,
+                command=self.open_link
+                )
+        self.no_button = tkinter.Button(
+                self.links,
+                text="NO",
+                width=6,
+                height=1,
+                bd=4,
+                command=self.close_links_window
+                )
+        
+        # Pack widgets into Window
+        # Labels
+        self.open_link_label.grid(row=1, column=0, columnspan=3)
+        self.link_url_label.grid(row=2, column=0, columnspan=3)
+        self.empty.grid(row=3, column=0, columnspan=3)
+        # Buttons
+        self.yes_button.grid(row=4, column=0)
+        self.no_button.grid(row=4, column=2)
+    
+    def open_link(self):
+        
+        # Opens link after user presses yes. Opens as a tab and raises the window
+        webbrowser.open(self.repo_url, new=0, autoraise=True)
+        
+        # Calls function to close window
+        self.close_links_window()
+    
+    def close_links_window(self):
+        
+        # Closes Repository & Documentation window
+        self.links.destroy()
+        
 
 """
 Image Processor
@@ -354,10 +471,7 @@ class ImageProcessor:
         """
         load_image loads whichever filepath was selected in open_dialog
         """
-        
-        # TODO: Put a try catch here to catch failed image opens
-        
-        # OpenCV Test
+
         # Load image
         print(path)
         
@@ -425,7 +539,6 @@ class ImageProcessor:
         self.apply_brightness_contrast()
         
         # Display color or gray original
-        # TODO: Change to color_modified
         if self.current_grayscale == 0:
             self.update_canvas_color(self.color_modified)
         else:
@@ -532,6 +645,7 @@ Basic setup and class initialization
 """
 
 # Logger Setup
+# TODO: Create several logs to track past several attempts to use app (5 - 10 tops)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(name)s, -%(levelname)s : %(message)s')
