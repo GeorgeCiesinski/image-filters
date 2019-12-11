@@ -5,6 +5,7 @@ Created on Mon Dec  2 20:37:51 2019
 @author: George Ciesinski
 """
 
+import os
 import cv2
 import numpy as np
 import tkinter
@@ -57,6 +58,7 @@ class Kernels:
             box_kernel
             ]
     
+    # Kernel names (mirrors above array)
     k_name = [
             "Identity Kernel",
             "Sharpen Kernel",
@@ -144,9 +146,9 @@ class Gui:
                 command=self.how_to
                 )
         self.helpMenu.add_command(
-                label="Export Logs",
+                label="Open Logs Folder",
                 # TODO: Open log directory
-                command=self.dummy
+                command=self.show_logs
                 )
         self.helpMenu.add_command(
                 label="Repository & Documentation",
@@ -172,11 +174,11 @@ class Gui:
                 initialdir="/", 
                 title = "Select a File", 
                 filetypes=(
+                        ("All files", "*.*"),
                         (".bmp files", "*.bmp"),
                         (".jpg files", "*jpg"), 
                         (".png files", "*.png"), 
-                        (".tiff files", "*.tiff"),
-                        ("All files", "*.*")
+                        (".tiff files", "*.tiff")
                         )
                 )
         except:
@@ -218,11 +220,11 @@ class Gui:
                     initialdir="/",
                     title="Save file",
                     filetypes=(
+                            ("All files", "*.*"),
                             (".bmp files", "*.bmp"),
                             (".jpg files", "*jpg"), 
                             (".png files", "*.png"), 
-                            (".tiff files", "*.tiff"),
-                            ("All files", "*.*")
+                            (".tiff files", "*.tiff")
                             )
                     )
             except:
@@ -265,9 +267,10 @@ Help > Repository & Documentation.
         
         tkinter.messagebox.showinfo("Instructions", how_to_instructions)
 
-    def export_logs(self):
+    def show_logs(self):
         
-        # TODO: Grab the latest few logs and zip them into a file on the desktop
+        # Export Logs
+        print("Exporting logs")
         pass
         
     def repo_docs(self):
@@ -468,10 +471,7 @@ class ImageProcessor:
         """
         load_image loads whichever filepath was selected in open_dialog
         """
-        
-        # TODO: Put a try catch here to catch failed image opens
-        
-        # OpenCV Test
+
         # Load image
         print(path)
         
@@ -539,7 +539,6 @@ class ImageProcessor:
         self.apply_brightness_contrast()
         
         # Display color or gray original
-        # TODO: Change to color_modified
         if self.current_grayscale == 0:
             self.update_canvas_color(self.color_modified)
         else:
