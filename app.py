@@ -157,15 +157,11 @@ class Gui:
         
         logger.debug("Successfully created the Help menu.")
 
-    # Opens an open_dialog allowing users to select a file they want to open
     def open_dialog(self):
         
         """
         open_dialog creates a new window allowing the user to get the filepath of the file they want to open
         """
-        
-        # TODO: Make sure file extension is valid
-        # TODO: Change the options so that All Files is primary, and multiple extensions are listed onder each menu option
         
         logger.debug("User has opened the open_dialog.")
         
@@ -202,7 +198,6 @@ class Gui:
         """
         
         # TODO: Make sure user specified a file extension. Pop up message box advising to use an available extension
-        # TODO: Automatically populate the file extension?
         
         logger.debug("User has opened the save_dialog.")
         
@@ -281,7 +276,7 @@ Help > Repository & Documentation.
         the window.
         """
         
-        # TODO: Improve window look
+        # TODO: Improve the look of the window
     
         # Repository URL
         self.repo_url = "https://github.com/GeorgeCiesinski/image-filters"
@@ -363,9 +358,7 @@ class ImageProcessor:
         """
         welcome_image creates a new canvas and updates it with the welcome image
         """
-        
-        # TODO: Update welcome_image so that it looks more professional
-        
+                
         # Welcome image path
         self.image = cv2.imread("welcome.png")
         
@@ -439,7 +432,6 @@ class ImageProcessor:
                 )      
         
         # TODO: Make label text larger and easier to read.
-        # TODO: Replace second widget with some kind of input field or something.
         
         # Kernel Labels
         self.filter_label = tkinter.Label(
