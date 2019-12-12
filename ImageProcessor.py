@@ -1,23 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Dec  2 20:37:51 2019
+Created on Wed Dec 11 20:30:01 2019
 
-@author: George Ciesinski
+@author: georg
 """
-
-import cv2
-import tkinter
-import logging
-import numpy as np
-from PIL import Image
-from PIL import ImageTk
-from Kernels import Kernels
-from Gui import Gui
-
 
 """
 Image Processor
 """
+
+import cv2
+import tkinter
+
 
 class ImageProcessor:
     
@@ -302,29 +296,3 @@ class ImageProcessor:
         
         # Create an image on the canvas
         self.canvas.create_image(0, 0, image=self.color_image, anchor=tkinter.NW)
-        
-        
-"""
-Basic setup and class initialization
-"""
-
-# Logger Setup
-# TODO: Create several logs to track past several attempts to use app (5 - 10 tops)
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(name)s, -%(levelname)s : %(message)s')
-file_handler = logging.FileHandler('Logs/logs.log')
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
-
-# Starts the image processor
-ip = ImageProcessor()
-
-# Create GUI object
-g = Gui(ip, logger)
-
-# Put up welcome image
-ip.welcome_image()
-
-# Tkinter main loop
-g.root.mainloop()
