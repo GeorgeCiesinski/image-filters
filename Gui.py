@@ -64,24 +64,24 @@ class Gui:
         self.logger.debug("Successfully created the base menu.")
         
         # File Menu
-        self.fileMenu = tkinter.Menu(self.menu)
+        self.fileMenu = tkinter.Menu(self.menu, tearoff=False)
         self.menu.add_cascade(label="File", underline=0, menu = self.fileMenu)
         self.fileMenu.add_command(
                 label="Open", 
-                underline=1,
+                underline=0,
                 command=self.open_dialog,
                 accelerator="Ctrl+O"
                 )
         self.fileMenu.add_command(
                 label="Save", 
-                underline=1,
+                underline=0,
                 command=self.save_dialog,
                 accelerator="Ctrl+S"
                 )
         self.fileMenu.add_separator()
         self.fileMenu.add_command(
                 label="Quit", 
-                underline=1,
+                underline=0,
                 command=self.close_window,
                 accelerator="Ctrl+Q"
                 )
@@ -89,11 +89,13 @@ class Gui:
         self.logger.debug("Successfully created the File menu.")
         
         # Help Menu
-        self.helpMenu = tkinter.Menu(self.menu)
+        self.helpMenu = tkinter.Menu(self.menu, tearoff=False)
         self.menu.add_cascade(label="Help", menu=self.helpMenu)
         self.helpMenu.add_command(
                 label="How to use",
-                command=self.how_to
+                underline=0,
+                command=self.how_to,
+                accelerator="Ctrl+H"
                 )
         self.helpMenu.add_command(
                 label="Open Logs Folder",
@@ -105,9 +107,15 @@ class Gui:
                 command=self.repo_docs
                 )
         
+        # Shortcuts for menu options
+        self.root.bind_all("<Control-o>", self.open_dialog)
+        self.root.bind_all("<Control-s>", self.save_dialog)
+        self.root.bind_all("<Control-q>", self.close_window)
+        self.root.bind_all("<Control-h>", self.how_to)
+        
         self.logger.debug("Successfully created the Help menu.")
 
-    def open_dialog(self):
+    def open_dialog(self, event=None):
         
         """
         open_dialog creates a new window allowing the user to get the filepath of the file they want to open
@@ -141,7 +149,7 @@ class Gui:
             self.logger.debug("Calling ip.load_image.")
             self.ip.load_image(self.root.filename)
 
-    def save_dialog(self):
+    def save_dialog(self, event=None):
         
         """
         save_dialog creates a new window allowing user to specify the save file path for the modified file
@@ -182,7 +190,7 @@ class Gui:
             self.logger.debug("Calling ip.save_image.")
             self.ip.save_image(self.root.savepath)
     
-    def close_window(self):
+    def close_window(self, event=None):
         
         """
         close_window destroys the tkinter window and closes the program
@@ -193,7 +201,7 @@ class Gui:
         # Destroys window and closes program
         self.root.destroy()
         
-    def how_to(self):
+    def how_to(self, event=None):
         
         """
         Shows a how to use screen in a message box
@@ -204,6 +212,7 @@ class Gui:
 1. Open a file using File > Open, or Ctrl+O
 2. Modify image using sliders
 3. Save modified file using File > Save, or Ctrl+S
+4. Close the program using File > Quit, or Ctrl+Q
 
 In case of any bugs, export the logs and submit them as a bug at the repository which can be found by clicking: 
 
