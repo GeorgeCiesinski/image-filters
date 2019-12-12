@@ -18,7 +18,7 @@ Basic setup and class initialization
 # TODO: Create several logs to track past several attempts to use app (5 - 10 tops)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(name)s, -%(levelname)s : %(message)s')
+formatter = logging.Formatter('%(asctime)s -%(levelname)s : %(message)s')
 file_handler = logging.FileHandler('Logs/logs.log')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
