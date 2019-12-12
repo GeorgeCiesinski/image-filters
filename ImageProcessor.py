@@ -109,12 +109,14 @@ class ImageProcessor:
         # Kernel Labels
         self.filter_label = tkinter.Label(
                 self.g.root,
-                text="Current Convolution Filter:"
+                text="Current Convolution Filter:",
+                font=("Segoe UI", 12)
                 )
         
         self.filter_name_label = tkinter.Label(
                 self.g.root,
-                text=""
+                text="",
+                font=("Segoe UI", 16)
                 )
         
         self.logger.debug("Successfully created sliders and label.")
