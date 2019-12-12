@@ -11,19 +11,26 @@ Image Processor
 
 import cv2
 import tkinter
-
+from Kernels import Kernels
+import numpy as np
+from PIL import Image
+from PIL import ImageTk
 
 class ImageProcessor:
     
-    def __init__(self):
-        # May not be needed anymore
-        pass
+    def __init__(self, logger):
+        
+        # Logger
+        self.logger = logger
     
-    def welcome_image(self):
+    def welcome_image(self, g):
         
         """
         welcome_image creates a new canvas and updates it with the welcome image
         """
+        
+        # Gui instance
+        self.g = g
                 
         # Welcome image path
         self.image = cv2.imread("welcome.png")
@@ -32,7 +39,7 @@ class ImageProcessor:
         height, width, no_channels = self.image.shape
         
         # Create canvas to fit the image
-        self.canvas = tkinter.Canvas(g.root, width = width, height = height)
+        self.canvas = tkinter.Canvas(self.g.root, width = width, height = height)
         self.canvas.grid(row=2, column=0, columnspan=3)
         
         # Convert to PhotoImage and update canvas
@@ -41,7 +48,7 @@ class ImageProcessor:
         # Creates image opened variable
         self.image_opened = False
         
-        logger.debug("Successfully created a canvas and loaded Welcome image.")
+        self.logger.debug("Successfully created a canvas and loaded Welcome image.")
         
     def create_sliders(self):
         
@@ -53,7 +60,7 @@ class ImageProcessor:
         
         # Brightness Slider
         self.brightness = tkinter.Scale(
-                g.root, 
+                self.g.root, 
                 from_=0, 
                 to=100, 
                 label="Brightness",
@@ -66,7 +73,7 @@ class ImageProcessor:
         
         # Contrast Slider
         self.contrast = tkinter.Scale(
-                g.root, 
+                self.g.root, 
                 from_=1, 
                 to=100, 
                 label="Contrast",
@@ -77,7 +84,7 @@ class ImageProcessor:
         
         # Grayscale Slider
         self.grayscale = tkinter.Scale(
-                g.root, 
+                self.g.root, 
                 from_=0, 
                 to=1, 
                 label="Grayscale",
@@ -88,7 +95,7 @@ class ImageProcessor:
         
         # Filters Slider
         self.filters = tkinter.Scale(
-                g.root, 
+                self.g.root, 
                 from_=0, 
                 to=len(Kernels.k_array)-1, 
                 label="Filters",
@@ -101,16 +108,16 @@ class ImageProcessor:
         
         # Kernel Labels
         self.filter_label = tkinter.Label(
-                g.root,
+                self.g.root,
                 text="Current Convolution Filter:"
                 )
         
         self.filter_name_label = tkinter.Label(
-                g.root,
+                self.g.root,
                 text=""
                 )
         
-        logger.debug("Successfully created sliders and label.")
+        self.logger.debug("Successfully created sliders and label.")
         
         # Put all the sliders in their grid spots
         self.brightness.grid(row=0, column=0, sticky=tkinter.W)
@@ -122,7 +129,7 @@ class ImageProcessor:
         self.filter_label.grid(row=0, column=2, sticky=tkinter.W)
         self.filter_name_label.grid(row=1, column=2, sticky=tkinter.W)
         
-        logger.debug("Successfully packed sliders and label into grid.")
+        self.logger.debug("Successfully packed sliders and label into grid.")
 
     def load_image(self, path):
         
@@ -139,19 +146,19 @@ class ImageProcessor:
         
         except:
             
-            logger.debug(f"Failed to open the image from the path: {path}")
+            self.logger.debug(f"Failed to open the image from the path: {path}")
             raise
             
         else:
             
-            logger.debug(f"Successfully read image from the filepath: {path}")
+            self.logger.debug(f"Successfully read image from the filepath: {path}")
             # Sets image_opened to True
             self.image_opened = True
                 
         # Converts to grayscale and saves as gray_original variable
         self.gray_original = cv2.cvtColor(self.color_original, cv2.COLOR_BGR2GRAY)
         
-        logger.debug("Successfully created gray_original image.")
+        self.logger.debug("Successfully created gray_original image.")
         
         # Create sliders
         self.create_sliders()
@@ -169,17 +176,17 @@ class ImageProcessor:
             try:
                 cv2.imwrite(path, self.color_modified)
             except:
-                logger.debug(f"Failed to save color_modified to {path}")
+                self.logger.debug(f"Failed to save color_modified to {path}")
             else:
-                logger.debug(f"Successfully saved color_modified to {path}")    
+                self.logger.debug(f"Successfully saved color_modified to {path}")    
         
         else: 
             try:
                 cv2.imwrite(path, self.gray_modified)
             except:
-                logger.debug(f"Failed to save gray_modified to {path}")
+                self.logger.debug(f"Failed to save gray_modified to {path}")
             else:
-                logger.debug(f"Successfully saved gray_modified to {path}")
+                self.logger.debug(f"Successfully saved gray_modified to {path}")
 
     def modify_image(self, var):
         
@@ -273,7 +280,7 @@ class ImageProcessor:
         self.canvas.config(width = width, height = height)
         
         # Change window size to match image
-        g.root.geometry(f"{width}x{height}")
+        self.g.root.geometry(f"{width}x{height}")
         
         # Convert from BGR to RGB, then to PhotoImage
         self.color_image = cv2.cvtColor(color_image, cv2.COLOR_BGR2RGB)
