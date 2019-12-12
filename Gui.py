@@ -19,10 +19,10 @@ class Gui:
     
     def __init__(self, ip, logger):
         
-        # Logger
+        # Logger instance from app.py
         self.logger = logger
         
-        # Image Processor
+        # Image Processor instance
         self.ip = ip
         
         # Create the window
@@ -30,10 +30,6 @@ class Gui:
         
         # Creates the menu bar
         self.create_menu()
-        
-    # TODO: Delete once no further use exists for this
-    def dummy(self):
-        pass
     
     def create_window(self):
         
