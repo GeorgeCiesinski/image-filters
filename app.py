@@ -9,6 +9,7 @@ import logging
 from logging import handlers
 from Gui import Gui
 from ImageProcessor import ImageProcessor
+from os import path
 
         
 """
@@ -20,12 +21,14 @@ Basic setup and class initialization
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s -%(levelname)s : %(message)s')
-# file_handler = logging.FileHandler('Logs/logs.log')
-file_handler = handlers.RotatingFileHandler('Logs/logs.log', mode='w', backupCount=5)
+# Rotating File Handler
+rollover_check = path.exists('Logs/logs.log')
+file_handler = handlers.RotatingFileHandler('Logs/logs.log', mode='w', maxBytes=10000, backupCount=5)
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 # Creates a new log file every time program is ran 
-file_handler.doRollover()
+if rollover_check:    
+    file_handler.doRollover()
 
 # Starts the image processor
 ip = ImageProcessor(logger)
