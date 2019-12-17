@@ -27,6 +27,8 @@ class ImageProcessor:
         
         """
         welcome_image creates a new canvas and updates it with the welcome image
+        ---
+        Tkinter init configurations should happen here and not __init__
         """
         
         # Gui instance
@@ -40,7 +42,7 @@ class ImageProcessor:
         
         # Create canvas to fit the image
         self.canvas = tkinter.Canvas(self.g.root, width = width, height = height)
-        self.canvas.grid(row=2, column=0, columnspan=3)
+        self.canvas.grid(row=2, column=0, columnspan=3, sticky = tkinter.NSEW)
         
         # Convert to PhotoImage and update canvas
         self.update_canvas_color(self.image)
@@ -64,7 +66,6 @@ class ImageProcessor:
                 from_=0, 
                 to=100, 
                 label="Brightness",
-                length=400,
                 orient=tkinter.HORIZONTAL,
                 command=self.modify_image
                 )
@@ -77,7 +78,6 @@ class ImageProcessor:
                 from_=1, 
                 to=100, 
                 label="Contrast",
-                length=400,
                 orient=tkinter.HORIZONTAL,
                 command=self.modify_image
                 )        
@@ -88,7 +88,6 @@ class ImageProcessor:
                 from_=0, 
                 to=1, 
                 label="Grayscale",
-                length=400,
                 orient=tkinter.HORIZONTAL,
                 command=self.modify_image
                 )     
@@ -99,7 +98,6 @@ class ImageProcessor:
                 from_=0, 
                 to=len(Kernels.k_array)-1, 
                 label="Filters",
-                length=400,
                 orient=tkinter.HORIZONTAL,
                 command=self.modify_image
                 )      
@@ -122,14 +120,22 @@ class ImageProcessor:
         self.logger.debug("Successfully created sliders and label.")
         
         # Put all the sliders in their grid spots
-        self.brightness.grid(row=0, column=0, sticky=tkinter.W)
-        self.contrast.grid(row=1, column=0, sticky=tkinter.W)
-        self.grayscale.grid(row=0, column=1, sticky=tkinter.W)
-        self.filters.grid(row=1, column=1, sticky=tkinter.W)
+        self.brightness.grid(row=0, column=0, sticky=tkinter.NSEW)
+        self.contrast.grid(row=1, column=0, sticky=tkinter.NSEW)
+        self.grayscale.grid(row=0, column=1, sticky=tkinter.NSEW)
+        self.filters.grid(row=1, column=1, sticky=tkinter.NSEW)
         
         # Put the labels in their grid spots
-        self.filter_label.grid(row=0, column=2, sticky=tkinter.W)
-        self.filter_name_label.grid(row=1, column=2, sticky=tkinter.W)
+        self.filter_label.grid(row=0, column=2, sticky=tkinter.NSEW)
+        self.filter_name_label.grid(row=1, column=2, sticky=tkinter.NSEW)
+        
+        # Configures grid with a weight
+        self.g.root.grid_columnconfigure(0, weight=1)
+        self.g.root.grid_columnconfigure(1, weight=1)
+        self.g.root.grid_columnconfigure(2, weight=1)
+        self.g.root.grid_rowconfigure(0, weight=1)
+        self.g.root.grid_rowconfigure(1, weight=1)
+        self.g.root.grid_rowconfigure(2, weight =1)
         
         self.logger.debug("Successfully packed sliders and label into grid.")
 
