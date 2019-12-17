@@ -64,7 +64,6 @@ class ImageProcessor:
                 from_=0, 
                 to=100, 
                 label="Brightness",
-                length=400,
                 orient=tkinter.HORIZONTAL,
                 command=self.modify_image
                 )
@@ -77,7 +76,6 @@ class ImageProcessor:
                 from_=1, 
                 to=100, 
                 label="Contrast",
-                length=400,
                 orient=tkinter.HORIZONTAL,
                 command=self.modify_image
                 )        
@@ -88,7 +86,6 @@ class ImageProcessor:
                 from_=0, 
                 to=1, 
                 label="Grayscale",
-                length=400,
                 orient=tkinter.HORIZONTAL,
                 command=self.modify_image
                 )     
@@ -99,7 +96,6 @@ class ImageProcessor:
                 from_=0, 
                 to=len(Kernels.k_array)-1, 
                 label="Filters",
-                length=400,
                 orient=tkinter.HORIZONTAL,
                 command=self.modify_image
                 )      
@@ -122,19 +118,19 @@ class ImageProcessor:
         self.logger.debug("Successfully created sliders and label.")
         
         # Put all the sliders in their grid spots
-        self.brightness.grid(row=0, column=0, sticky=tkinter.W)
-        self.contrast.grid(row=1, column=0, sticky=tkinter.W)
-        self.grayscale.grid(row=0, column=1, sticky=tkinter.W)
-        self.filters.grid(row=1, column=1, sticky=tkinter.W)
+        self.brightness.grid(row=0, column=0, sticky=tkinter.EW)
+        self.contrast.grid(row=1, column=0, sticky=tkinter.EW)
+        self.grayscale.grid(row=0, column=1, sticky=tkinter.EW)
+        self.filters.grid(row=1, column=1, sticky=tkinter.EW)
         
         # Put the labels in their grid spots
-        self.filter_label.grid(row=0, column=2, sticky=tkinter.W)
-        self.filter_name_label.grid(row=1, column=2, sticky=tkinter.W)
+        self.filter_label.grid(row=0, column=2, sticky=tkinter.EW)
+        self.filter_name_label.grid(row=1, column=2, sticky=tkinter.EW)
         
         # Configures grid with a weight
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_columnconfigure(2, weight=1)
+        self.grid_columnconfigure(0, weight=2)
+        self.grid_columnconfigure(1, weight=2)
+        self.grid_columnconfigure(2, weight=2)
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
         
