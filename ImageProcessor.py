@@ -40,7 +40,7 @@ class ImageProcessor:
         
         # Create canvas to fit the image
         self.canvas = tkinter.Canvas(self.g.root, width = width, height = height)
-        self.canvas.grid(row=2, column=0, columnspan=3)
+        self.canvas.grid(row=2, column=0, columnspan=3, sticky = tkinter.EW)
         
         # Convert to PhotoImage and update canvas
         self.update_canvas_color(self.image)
@@ -130,9 +130,10 @@ class ImageProcessor:
         # Configures grid with a weight
         self.grid_columnconfigure(0, weight=2)
         self.grid_columnconfigure(1, weight=2)
-        self.grid_columnconfigure(2, weight=2)
+        self.grid_columnconfigure(2, weight=1)
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(2, weight =1)
         
         self.logger.debug("Successfully packed sliders and label into grid.")
 
