@@ -130,12 +130,12 @@ class ImageProcessor:
         self.filter_name_label.grid(row=1, column=2, sticky=tkinter.NSEW)
         
         # Configures grid with a weight
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_columnconfigure(2, weight=1)
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_rowconfigure(1, weight=1)
-        self.grid_rowconfigure(2, weight =1)
+        self.g.root.grid_columnconfigure(0, weight=1)
+        self.g.root.grid_columnconfigure(1, weight=1)
+        self.g.root.grid_columnconfigure(2, weight=1)
+        self.g.root.grid_rowconfigure(0, weight=1)
+        self.g.root.grid_rowconfigure(1, weight=1)
+        self.g.root.grid_rowconfigure(2, weight =1)
         
         self.logger.debug("Successfully packed sliders and label into grid.")
 
