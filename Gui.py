@@ -215,9 +215,24 @@ class Gui:
             else:
                 self.logger.debug(f"Successfully acquired the save path: {full_path}")
                 
-            # Calls ip.save_image to save the image at specified path
-            self.logger.debug("Calling ip.save_image.")
-            self.ip.save_image(full_path)
+                # Split filename & extension
+                filename, file_extension = os.path.splitext(full_path)
+                
+                self.logger.debug(f"Extension: {file_extension}")
+                
+                # Checks if file_extension is compatible with OpenCV
+                if file_extension in self.file_types:
+            
+                    # Calls ip.save_image to save the image at specified path
+                    self.logger.debug("Calling ip.save_image.")
+                    self.ip.save_image(full_path)
+                    
+                else:
+            
+                    self.logger.debug(f"An incompatible extension was specified: {file_extension}. Failed to save file.")
+                    
+                    # Calls wrong_format method which instructs the user on correct usage
+                    self.wrong_format()
     
     def wrong_format(self):
         
