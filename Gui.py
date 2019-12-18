@@ -5,6 +5,7 @@ Created on Wed Dec 11 20:06:11 2019
 @author: georg
 """
 
+import os
 import webbrowser
 import tkinter
 from tkinter import filedialog
@@ -30,6 +31,23 @@ class Gui:
         
         # Creates the menu bar
         self.create_menu()
+        
+        # List of filetypes compatible with OpenCV
+        self.file_types = [
+                ".bmp",
+                ".dib",
+                ".jpeg",
+                ".jpg",
+                ".jpe",
+                ".png",
+                ".pbm",
+                ".pgm",
+                ".ppm",
+                ".sr",
+                ".ras",
+                ".tiff",
+                ".tif",
+                ]
     
     def create_window(self):
         
@@ -120,7 +138,7 @@ class Gui:
         self.logger.debug("User has opened the open_dialog.")
         
         try:
-            self.root.filename = filedialog.askopenfilename(
+            full_path = filedialog.askopenfilename(
                 initialdir="/", 
                 title = "Select a File", 
                 filetypes=(
@@ -132,18 +150,33 @@ class Gui:
                         )
                 )
         except:
-            self.logger.exception(f"Failed to acquire the filepath: {self.root.filename}")
+            self.logger.exception(f"Failed to acquire the filepath: {full_path}")
             raise
         else:
-            self.logger.debug(f"Successfully acquired the filepath: {self.root.filename}")
+            self.logger.debug(f"Successfully acquired the filepath: {full_path}")
         
-        # TODO: Check to make sure filepath ends in compatible format extension
+        # Split filename & extension
+        filename, file_extension = os.path.splitext(full_path)
         
-        if len(self.root.filename) > 0:
+        self.logger.debug(f"Extension: {file_extension}")
+        
+        # Checks if file is compatible with OpenCV
+        if file_extension in self.file_types:
+        
+            # Check if filepath is returned
+            if len(full_path) > 0:
+                
+                # Calls ip.load_image to open the specified image file
+                self.logger.debug("Calling ip.load_image.")
+                self.ip.load_image(full_path)
+                
+        else:
             
-            # Calls ip.load_image to open the specified image file
-            self.logger.debug("Calling ip.load_image.")
-            self.ip.load_image(self.root.filename)
+            self.logger.debug(f"An incompatible extension was specified: {file_extension}. Failed to open file.")
+            
+            # Calls wrong_format method which instructs the user on correct usage
+            self.wrong_format()
+            
 
     def save_dialog(self, event=None):
         
@@ -165,7 +198,7 @@ class Gui:
         
             try: 
                 # Ask user to select file save location
-                self.root.savepath = filedialog.asksaveasfilename(
+                full_path = filedialog.asksaveasfilename(
                     initialdir="/",
                     title="Save file",
                     filetypes=(
@@ -177,15 +210,50 @@ class Gui:
                             )
                     )
             except:
-                self.logger.exception(f"Failed to acquire the save path: {self.root.filename}")
+                self.logger.exception(f"Failed to acquire the save path: {full_path}")
                 raise
             else:
-                self.logger.debug(f"Successfully acquired the save path: {self.root.filename}")
+                self.logger.debug(f"Successfully acquired the save path: {full_path}")
                 
-            # Calls ip.save_image to save the image at specified path
-            self.logger.debug("Calling ip.save_image.")
-            self.ip.save_image(self.root.savepath)
+                # Split filename & extension
+                filename, file_extension = os.path.splitext(full_path)
+                
+                self.logger.debug(f"Extension: {file_extension}")
+                
+                # Checks if file_extension is compatible with OpenCV
+                if file_extension in self.file_types:
+            
+                    # Calls ip.save_image to save the image at specified path
+                    self.logger.debug("Calling ip.save_image.")
+                    self.ip.save_image(full_path)
+                    
+                else:
+            
+                    self.logger.debug(f"An incompatible extension was specified: {file_extension}. Failed to save file.")
+                    
+                    # Calls wrong_format method which instructs the user on correct usage
+                    self.wrong_format()
     
+    def wrong_format(self):
+        
+        format_instructions = """You have tried to open or save a file using an incompatible format.
+
+Image-Filters is compatible with the below formats: 
+    
+Windows Bitmaps: .bmp, .dib
+JPEG Files: .jpeg, .jpg, .jpe
+Portable Network Graphics: .png
+Portable Image Format: .pbm, .pgm, .ppm
+Sun Rasters: .sr, .ras
+TIFF Files: .tiff, .tif
+
+When opening images, please make sure that they are one of these formats as other formats are not guaranteed to work. 
+
+When saving images, please include one of these file extensions in the filename to ensure the file is saved.
+"""
+        
+        tkinter.messagebox.showinfo("Incorrect Format", format_instructions)
+        
     def close_window(self, event=None):
         
         """
