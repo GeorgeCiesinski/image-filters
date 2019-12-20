@@ -47,7 +47,7 @@ class ImageProcessor:
         # Convert to PhotoImage and update canvas
         self.update_canvas_color(self.image)
         
-        # Creates image opened variable
+        # Indicates this is welcome image and that an actual image hasn't been opened
         self.image_opened = False
         
         self.logger.debug("Successfully created a canvas and loaded Welcome image.")
@@ -133,8 +133,8 @@ class ImageProcessor:
         self.g.root.grid_columnconfigure(0, weight=1)
         self.g.root.grid_columnconfigure(1, weight=1)
         self.g.root.grid_columnconfigure(2, weight=1)
-        self.g.root.grid_rowconfigure(0, weight=1)
-        self.g.root.grid_rowconfigure(1, weight=1)
+        self.g.root.grid_rowconfigure(0, weight=0)
+        self.g.root.grid_rowconfigure(1, weight=0)
         self.g.root.grid_rowconfigure(2, weight =1)
         
         self.logger.debug("Successfully packed sliders and label into grid.")
@@ -162,7 +162,10 @@ class ImageProcessor:
             self.logger.debug(f"Successfully read image from the filepath: {path}")
             # Sets image_opened to True
             self.image_opened = True
-                
+         
+        # Sets original window geometry
+        self.initial_geometry()
+        
         # Converts to grayscale and saves as gray_original variable
         self.gray_original = cv2.cvtColor(self.color_original, cv2.COLOR_BGR2GRAY)
         
@@ -252,7 +255,7 @@ class ImageProcessor:
     def apply_brightness_contrast(self):
         
         """
-        Apply the brightness and contrast
+        Apply the brightness and contrast to color_kernel and gray_kernel images
         dst = cv2.addWeighted(src1, alpha, src2, beta, gamma)
         dst = cv2.addWeighted(image, contrast, zeros_image, 0, brightness) || src2 must be image of 0's, so we use np.zeros_like to do this
         """
@@ -274,21 +277,64 @@ class ImageProcessor:
                 0, 
                 self.current_brightness - 50)
         
-
+    def initial_geometry(self):
+        """
+        initial_geometry changes the window geometry to match image
+        """
+        
+        # Get image dimensions
+        self.image_height, self.image_width, no_channels = self.color_original.shape
+        
+        # Update canvas size
+        self.canvas.config(width = self.image_width, height = self.image_height)
+        
+        # Calculate initial root geometry
+        if self.image_width < 500:
+            self.i_width = 500
+        else:
+            self.i_width = self.image_width
+        self.i_height = self.image_height + 150
+        
+        # Change window size to match image
+        self.g.root.geometry(f"{self.i_width}x{self.i_height}")
+        
+        self.logger.debug(f"The initial window size is: height - {self.i_height}, width - {self.i_width}.")
+        
+        # Binds window size to resize_image function
+        self.g.root.bind('<Configure>', self.resize_image)
+        
+    def resize_image(self, event = None):
+        """
+        resize_image resizes the canvas and photoImage whenever the root window is resized
+        """
+        
+        # Get new window height
+        self.n_width = self.g.root.winfo_width()
+        self.n_height = self.g.root.winfo_height()
+        
+        # Calculate difference between old window and new window
+        self.width_diff = self.n_width - self.i_width
+        self.height_diff = self.n_height - self.i_height
+        
+        # Create a new image with the new size
+        # self.new_image_width = self.image_width + self.width_diff
+        self.new_image_height = self.image_height + self.height_diff
+        self.new_image_width = int((self.new_image_height * self.image_width) /self.image_height)
+        
+        self.color_resized = cv2.resize(self.color_modified, (self.new_image_width, self.new_image_height))
+        self.gray_resized = cv2.resize(self.gray_modified, (self.new_image_width, self.new_image_height))
+        
+        # Display color or gray original
+        if self.current_grayscale == 0:
+            self.update_canvas_color(self.color_resized)
+        else:
+            self.update_canvas_gray(self.gray_resized)
+        
     def update_canvas_color(self, color_image):
         
         """
         update_canvas_color converts BGR to RGB and then PhotoImage before displaying on canvas
         """
-        
-        # Get image dimensions
-        height, width, no_channels = color_image.shape
-        
-        # Update canvas size
-        self.canvas.config(width = width, height = height)
-        
-        # Change window size to match image
-        self.g.root.geometry(f"{width}x{height}")
         
         # Convert from BGR to RGB, then to PhotoImage
         self.color_image = cv2.cvtColor(color_image, cv2.COLOR_BGR2RGB)

@@ -11,22 +11,32 @@ from Gui import Gui
 from ImageProcessor import ImageProcessor
 from os import path
 
+def on_closing():
+    """
+    Closes program if user clicks x button on the window
+    """
+    
+    g.root.destroy()
         
+
 """
 Basic setup and class initialization
 """
 
 # Logger Setup
-# TODO: Create several logs to track past several attempts to use app (5 - 10 tops)
+
+# Basic settings
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s -%(levelname)s : %(message)s')
-# Rotating File Handler
+
+# Rotating File Handler creates 5 backups on top of the current logs
 rollover_check = path.exists('Logs/logs.log')
 file_handler = handlers.RotatingFileHandler('Logs/logs.log', mode='w', maxBytes=10000, backupCount=5)
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
-# Creates a new log file every time program is ran 
+
+# Every time program is ran, check if log exists, rollover if yes
 if rollover_check:    
     file_handler.doRollover()
 
@@ -38,6 +48,9 @@ g = Gui(ip, logger)
 
 # Put up welcome image, includes GUI instance
 ip.welcome_image(g)
+
+# Close program if window is destroyed
+g.root.protocol("WM_DELETE_WINDOW", on_closing)
 
 # Tkinter main loop
 g.root.mainloop()
