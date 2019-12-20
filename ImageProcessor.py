@@ -318,6 +318,18 @@ class ImageProcessor:
         
         print(f"The difference is:: width : {self.width_diff}, height : {self.height_diff}.")
         
+        self.new_image_width = self.image_width + self.width_diff
+        self.new_image_height = self.image_height + self.height_diff
+        
+        self.color_resized = cv2.resize(self.color_modified, (self.new_image_width, self.new_image_height))
+        self.gray_resized = cv2.resize(self.gray_modified, (self.new_image_width, self.new_image_height))
+        
+        # Display color or gray original
+        if self.current_grayscale == 0:
+            self.update_canvas_color(self.color_resized)
+        else:
+            self.update_canvas_gray(self.gray_resized)
+        
     def update_canvas_color(self, color_image):
         
         """
