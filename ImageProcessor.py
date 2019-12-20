@@ -283,21 +283,24 @@ class ImageProcessor:
         """
         
         # Get image dimensions
-        height, width, no_channels = self.color_original.shape
+        self.image_height, self.image_width, no_channels = self.color_original.shape
         
         # Update canvas size
-        self.canvas.config(width = width, height = height)
+        self.canvas.config(width = self.image_width, height = self.image_height)
         
         # Calculate initial root geometry
-        if width < 500:
+        if self.image_width < 500:
             self.i_width = 500
         else:
-            self.i_width = width
-        self.i_height = height + 150
+            self.i_width = self.image_width
+        self.i_height = self.image_height + 150
         
         # Change window size to match image
         self.g.root.geometry(f"{self.i_width}x{self.i_height}")
         
+        self.logger.debug(f"The initial window size is: height - {self.i_height}, width - {self.i_width}.")
+        
+        # Binds window size to resize_image function
         self.g.root.bind('<Configure>', self.resize_image)
         
     def resize_image(self, event = None):
@@ -305,7 +308,15 @@ class ImageProcessor:
         resize_image resizes the canvas and photoImage whenever the root window is resized
         """
         
-        print("Resizing Image")
+        # Get new window height
+        self.n_width = self.g.root.winfo_width()
+        self.n_height = self.g.root.winfo_height()
+        
+        # Calculate difference between old window and new window
+        self.width_diff = self.n_width - self.i_width
+        self.height_diff = self.n_height - self.i_height
+        
+        print(f"The difference is:: width : {self.width_diff}, height : {self.height_diff}.")
         
     def update_canvas_color(self, color_image):
         

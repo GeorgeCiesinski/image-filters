@@ -11,7 +11,14 @@ from Gui import Gui
 from ImageProcessor import ImageProcessor
 from os import path
 
+def on_closing():
+    """
+    Closes program if user clicks x button on the window
+    """
+    
+    g.root.destroy()
         
+
 """
 Basic setup and class initialization
 """
@@ -41,6 +48,9 @@ g = Gui(ip, logger)
 
 # Put up welcome image, includes GUI instance
 ip.welcome_image(g)
+
+# Close program if window is destroyed
+g.root.protocol("WM_DELETE_WINDOW", on_closing)
 
 # Tkinter main loop
 g.root.mainloop()
