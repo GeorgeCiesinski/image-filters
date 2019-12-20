@@ -6,6 +6,7 @@ Created on Wed Dec 11 20:06:11 2019
 """
 
 import os
+import subprocess
 import webbrowser
 import tkinter
 from tkinter import filedialog
@@ -286,10 +287,22 @@ Help > Repository & Documentation.
         tkinter.messagebox.showinfo("Instructions", how_to_instructions)
 
     def show_logs(self):
+        """
+        show_dir opens the Logs/ directory in Windows Explorer
+        """
         
-        # Export Logs
-        print("Exporting logs")
-        pass
+        # Logs folder
+        log_folder = "Logs\\"
+        
+        # Get the current working directory
+        current_directory = os.getcwd()
+        
+        # Combine into Log Directory
+        log_directory = os.path.join(current_directory, log_folder)
+        
+        # Open directory in windows explorer
+        subprocess.Popen(f'explorer {log_directory}')
+        
         
     def repo_docs(self):
         
