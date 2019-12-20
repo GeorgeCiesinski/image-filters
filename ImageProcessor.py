@@ -133,8 +133,8 @@ class ImageProcessor:
         self.g.root.grid_columnconfigure(0, weight=1)
         self.g.root.grid_columnconfigure(1, weight=1)
         self.g.root.grid_columnconfigure(2, weight=1)
-        self.g.root.grid_rowconfigure(0, weight=1)
-        self.g.root.grid_rowconfigure(1, weight=1)
+        self.g.root.grid_rowconfigure(0, weight=0)
+        self.g.root.grid_rowconfigure(1, weight=0)
         self.g.root.grid_rowconfigure(2, weight =1)
         
         self.logger.debug("Successfully packed sliders and label into grid.")
