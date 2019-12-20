@@ -279,7 +279,7 @@ class ImageProcessor:
         
     def initial_geometry(self):
         """
-        Changes the window geometry to match image
+        initial_geometry changes the window geometry to match image
         """
         
         # Get image dimensions
@@ -288,15 +288,24 @@ class ImageProcessor:
         # Update canvas size
         self.canvas.config(width = width, height = height)
         
-        # Calculate root geometry
+        # Calculate initial root geometry
         if width < 500:
-            r_width = 500
+            self.i_width = 500
         else:
-            r_width = width
-        r_height = height + 150
+            self.i_width = width
+        self.i_height = height + 150
         
         # Change window size to match image
-        self.g.root.geometry(f"{r_width}x{r_height}")
+        self.g.root.geometry(f"{self.i_width}x{self.i_height}")
+        
+        self.g.root.bind('<Configure>', self.resize_image)
+        
+    def resize_image(self, event = None):
+        """
+        resize_image resizes the canvas and photoImage whenever the root window is resized
+        """
+        
+        print("Resizing Image")
         
     def update_canvas_color(self, color_image):
         
