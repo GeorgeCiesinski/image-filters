@@ -6,6 +6,7 @@ Created on Wed Dec 11 20:06:11 2019
 """
 
 import os
+import subprocess
 import webbrowser
 import tkinter
 from tkinter import filedialog
@@ -291,7 +292,7 @@ Help > Repository & Documentation.
         """
         
         # Logs folder
-        log_folder = "Logs\"
+        log_folder = "Logs\\"
         
         # Get the current working directory
         current_directory = os.getcwd()
@@ -299,7 +300,8 @@ Help > Repository & Documentation.
         # Combine into Log Directory
         log_directory = os.path.join(current_directory, log_folder)
         
-        print(log_directory)
+        # Open directory in windows explorer
+        subprocess.Popen(f'explorer {log_directory}')
         
         
     def repo_docs(self):
