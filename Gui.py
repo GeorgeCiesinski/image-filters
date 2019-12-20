@@ -286,10 +286,21 @@ Help > Repository & Documentation.
         tkinter.messagebox.showinfo("Instructions", how_to_instructions)
 
     def show_logs(self):
+        """
+        show_dir opens the Logs/ directory in Windows Explorer
+        """
         
-        # Export Logs
-        print("Exporting logs")
-        pass
+        # Logs folder
+        log_folder = "Logs\"
+        
+        # Get the current working directory
+        current_directory = os.getcwd()
+        
+        # Combine into Log Directory
+        log_directory = os.path.join(current_directory, log_folder)
+        
+        print(log_directory)
+        
         
     def repo_docs(self):
         
