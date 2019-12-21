@@ -4,7 +4,7 @@ An app to load images, alter the image properties such as brightness, contrast, 
 
 ## Motivation
 
-I created this project to get a better understanding of OpenCV and GUIs. 
+I originally created this project to get a better understanding of OpenCV and TKinter. 
 
 ## Getting Started
 
@@ -25,18 +25,38 @@ TBA
 ## Built With
 
 - OpenCV
+- TKinter
 
 ## Features
 
-- Loads images in formats such as .bmp, .jpg, .tiff, .png and more
+- Loads images in openCV compatible formats, listed below
 - Convert between RGB and grayscale
 - Applies changes to the image brightness & contrast
 - Applies different kind of filters such as sharpness, gaussian blur, and averaging
 - Saves altered image to an output folder
 
+## Compatible Formats
+
+Although this project uses OpenCV and is theoretically able to open any OpenCV compatible image file, I decided to use the below files since they are the most common: 
+
+- .bmp
+- .dib
+- .jpeg
+- .jpg
+- .jpe
+- .png
+- .pbm
+- .pgm
+- .ppm
+- .sr
+- .ras
+- .tiff
+- .tif
+
 ## Credits
 
-TBA
+- George Ciesinski: solo programmer on this project
+
 
 ## License
 
@@ -44,4 +64,9 @@ TBA
 
 ## Acknowledgments
 
-Thanks to Zenva for providing awesome tutorials that taught me how to create a project like this.
+- Koko: My mentor who continues to introduce me to best practice for Python development with each new project I write
+
+& Tutorials: 
+
+- Mohit Deshpande from zenva.com: introduced me to openCV
+- John Elder from codemy.com: introduced me to TKinter
