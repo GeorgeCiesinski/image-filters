@@ -1,10 +1,10 @@
 # Image Filters
 
-An app to load images, alter the image properties such as brightness, contrast, and color model. You can also apply several different filters and save the image into an output folder.
+An app to load images, alter the image properties such as brightness, contrast, and color/grayscale. You can also apply several different filters and save the image into an output folder. The program also contains a logging system to detect errors and generate a log file with multiple backups. 
 
 ## Motivation
 
-I originally created this project to get a better understanding of OpenCV and TKinter. 
+I originally created this project to get a better understanding of OpenCV and TKinter. Throughout the project, I pursued further knowledge about convolution, and researched good practice when creating open source projects. This project served as a learning opportunity to improve my skills with Python. 
 
 ## Getting Started
 
@@ -12,7 +12,8 @@ TBA
 
 ### Prerequisites
 
-TBA
+- Python 3.6.6
+- Dependencies from requirements.txt
 
 ### Installing
 
@@ -60,7 +61,7 @@ Although this project uses OpenCV and is theoretically able to open any OpenCV c
 
 ## License
 
-TBA
+MIT License (see LICENSE for more information)
 
 ## Acknowledgments
 
