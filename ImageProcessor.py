@@ -41,6 +41,7 @@ class ImageProcessor:
         height, width, no_channels = self.image.shape
         
         # Create canvas to fit the image
+    # TODO: Move canvas creation to GUI, refer to it from here
         self.canvas = tkinter.Canvas(self.g.root, width = width, height = height)
         self.canvas.grid(row=2, column=0, columnspan=3, sticky = tkinter.NSEW)
         
@@ -75,7 +76,8 @@ class ImageProcessor:
             self.logger.debug(f"Successfully read image from the filepath: {path}")
             # Sets image_opened to True
             self.image_opened = True
-         
+        
+    # TODO: Update this to reflect geometry method in GUI
         # Sets original window geometry
         self.initial_geometry()
         
@@ -189,7 +191,8 @@ class ImageProcessor:
                 np.zeros_like(self.gray_original), 
                 0, 
                 self.current_brightness - 50)
-        
+    
+    # TODO: Move this method to GUI
     def initial_geometry(self):
         """
         initial_geometry changes the window geometry to match image
@@ -215,7 +218,8 @@ class ImageProcessor:
         
         # Binds window size to resize_image function
         self.g.root.bind('<Configure>', self.resize_image)
-        
+    
+    # TODO: Move this method to GUI    
     def resize_image(self, event = None):
         """
         resize_image resizes the canvas and photoImage whenever the root window is resized
@@ -255,6 +259,7 @@ class ImageProcessor:
         self.color_image = ImageTk.PhotoImage(self.color_image)
         
         # Create an image on the canvas
+    # TODO: Update to refer to GUI
         self.canvas.create_image(0, 0, image=self.color_image, anchor=tkinter.NW)
 
     def update_canvas_gray(self, gray_image):
@@ -269,4 +274,5 @@ class ImageProcessor:
         self.color_image = ImageTk.PhotoImage(self.color_image)
         
         # Create an image on the canvas
+    # TODO: Update to refer to GUI
         self.canvas.create_image(0, 0, image=self.color_image, anchor=tkinter.NW)
