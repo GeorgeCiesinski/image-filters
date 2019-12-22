@@ -11,7 +11,7 @@ Image Processor
 
 import cv2
 import tkinter
-from Kernels import Kernels
+import Kernels
 import numpy as np
 from PIL import Image
 from PIL import ImageTk
