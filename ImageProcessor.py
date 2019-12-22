@@ -35,11 +35,11 @@ class ImageProcessor:
         # Welcome image path
         self.image = cv2.imread("welcome.png")
         
-        # Get image dimensions
-        height, width, no_channels = self.image.shape
+        # Get original image dimensions
+        self.orig_height, self.orig_width, no_channels = self.image.shape
         
         # Create canvas
-        self.g.create_canvas(width, height)
+        self.g.create_canvas()
         
         # Convert to PhotoImage and update canvas
         self.update_canvas_color(self.image)
@@ -193,28 +193,28 @@ class ImageProcessor:
         """
         update_canvas_color converts BGR to RGB and then PhotoImage before displaying on canvas
         """
-        
+    # TODO: Put this in a try catch to avoid conversion fails
         # Convert from BGR to RGB, then to PhotoImage
         self.color_image = cv2.cvtColor(color_image, cv2.COLOR_BGR2RGB)
         self.color_image = Image.fromarray(self.color_image)
         self.color_image = ImageTk.PhotoImage(self.color_image)
         
         # Create an image on the canvas
-        self.g.canvas.create_image(0, 0, image=self.color_image, anchor=tkinter.NW)
+        self.g.update_canvas(self.color_image)
 
     def update_canvas_gray(self, gray_image):
         
         """
         update_canvas_gray converts Gray to RGB and then PhotoImage before displaying on canvas
         """
-        
+    # TODO: Put this in a try catch to avoid conversion fails
         # Convert from BGR to RGB, then to PhotoImage
-        self.color_image = cv2.cvtColor(gray_image, cv2.COLOR_GRAY2RGB)
-        self.color_image = Image.fromarray(self.color_image)
-        self.color_image = ImageTk.PhotoImage(self.color_image)
+        self.gray_image = cv2.cvtColor(gray_image, cv2.COLOR_GRAY2RGB)
+        self.gray_image = Image.fromarray(self.gray_image)
+        self.gray_image = ImageTk.PhotoImage(self.gray_image)
         
         # Create an image on the canvas
-        self.g.canvas.create_image(0, 0, image=self.color_image, anchor=tkinter.NW)
+        self.g.update_canvas(self.gray_image)
         
     def resize_and_update(self):
         
