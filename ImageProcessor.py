@@ -27,8 +27,6 @@ class ImageProcessor:
         
         """
         welcome_image creates a new canvas and updates it with the welcome image
-        ---
-        Tkinter init configurations should happen here and not __init__
         """
         
         # Gui instance
@@ -77,7 +75,7 @@ class ImageProcessor:
         
     # TODO: Update this to reflect geometry method in GUI
         # Sets original window geometry
-        self.initial_geometry()
+        self.g.initial_geometry()
         
         # Converts to grayscale and saves as gray_original variable
         self.gray_original = cv2.cvtColor(self.color_original, cv2.COLOR_BGR2GRAY)
@@ -189,61 +187,6 @@ class ImageProcessor:
                 np.zeros_like(self.gray_original), 
                 0, 
                 self.current_brightness - 50)
-    
-    # TODO: Move this method to GUI
-    def initial_geometry(self):
-        """
-        initial_geometry changes the window geometry to match image
-        """
-        
-        # Get image dimensions
-        self.image_height, self.image_width, no_channels = self.color_original.shape
-        
-        # Update canvas size
-        self.canvas.config(width = self.image_width, height = self.image_height)
-        
-        # Calculate initial root geometry
-        if self.image_width < 500:
-            self.i_width = 500
-        else:
-            self.i_width = self.image_width
-        self.i_height = self.image_height + 150
-        
-        # Change window size to match image
-        self.g.root.geometry(f"{self.i_width}x{self.i_height}")
-        
-        self.logger.debug(f"The initial window size is: height - {self.i_height}, width - {self.i_width}.")
-        
-        # Binds window size to resize_image function
-        self.g.root.bind('<Configure>', self.resize_image)
-    
-    # TODO: Move this method to GUI    
-    def resize_image(self, event = None):
-        """
-        resize_image resizes the canvas and photoImage whenever the root window is resized
-        """
-        
-        # Get new window height
-        self.n_width = self.g.root.winfo_width()
-        self.n_height = self.g.root.winfo_height()
-        
-        # Calculate difference between old window and new window
-        self.width_diff = self.n_width - self.i_width
-        self.height_diff = self.n_height - self.i_height
-        
-        # Create a new image with the new size
-        # self.new_image_width = self.image_width + self.width_diff
-        self.new_image_height = self.image_height + self.height_diff
-        self.new_image_width = int((self.new_image_height * self.image_width) /self.image_height)
-        
-        self.color_resized = cv2.resize(self.color_modified, (self.new_image_width, self.new_image_height))
-        self.gray_resized = cv2.resize(self.gray_modified, (self.new_image_width, self.new_image_height))
-        
-        # Display color or gray original
-        if self.current_grayscale == 0:
-            self.update_canvas_color(self.color_resized)
-        else:
-            self.update_canvas_gray(self.gray_resized)
         
     def update_canvas_color(self, color_image):
         
@@ -272,3 +215,15 @@ class ImageProcessor:
         
         # Create an image on the canvas
         self.g.canvas.create_image(0, 0, image=self.color_image, anchor=tkinter.NW)
+        
+    def resize_and_update(self):
+        
+        # Resize color and gray images
+        self.color_resized = cv2.resize(self.color_modified, (self.g.new_image_width, self.g.new_image_height))
+        self.gray_resized = cv2.resize(self.gray_modified, (self.g.new_image_width, self.g.new_image_height))
+        
+        # Display color or gray original
+        if self.current_grayscale == 0:
+            self.update_canvas_color(self.color_resized)
+        else:
+            self.update_canvas_gray(self.gray_resized)    

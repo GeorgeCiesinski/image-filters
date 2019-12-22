@@ -136,6 +136,52 @@ class Gui:
         self.canvas = tkinter.Canvas(self.root, width = width, height = height)
         self.canvas.grid(row=2, column=0, columnspan=3, sticky = tkinter.NSEW)
 
+    def initial_geometry(self):
+        """
+        initial_geometry changes the window geometry to match image
+        """
+        
+        # Get image dimensions
+        self.image_height, self.image_width, no_channels = self.ip.color_original.shape
+        
+        # Update canvas size
+        self.canvas.config(width = self.image_width, height = self.image_height)
+        
+        # Calculate initial root geometry
+        if self.image_width < 500:
+            self.i_width = 500
+        else:
+            self.i_width = self.image_width
+        self.i_height = self.image_height + 150
+        
+        # Change window size to match image
+        self.root.geometry(f"{self.i_width}x{self.i_height}")
+        
+        self.logger.debug(f"The initial window size is: height - {self.i_height}, width - {self.i_width}.")
+        
+        # Binds window size to resize_image function
+        self.root.bind('<Configure>', self.resize_image)
+    
+    def resize_image(self, event = None):
+        """
+        resize_image resizes the canvas and photoImage whenever the root window is resized
+        """
+        
+        # Get new window height
+        self.n_width = self.root.winfo_width()
+        self.n_height = self.root.winfo_height()
+        
+        # Calculate difference between old window and new window
+        self.width_diff = self.n_width - self.i_width
+        self.height_diff = self.n_height - self.i_height
+        
+        # Create a new image with the new size
+        self.new_image_height = self.image_height + self.height_diff
+        self.new_image_width = int((self.new_image_height * self.image_width) / self.image_height)
+        
+        # Asks image processor to resize image using cv2
+        self.ip.resize_and_update()
+
     def create_sliders(self):
         
         """
