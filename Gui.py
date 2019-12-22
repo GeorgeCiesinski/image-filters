@@ -131,6 +131,11 @@ class Gui:
         
         self.logger.debug("Successfully created the Help menu.")
 
+    def create_canvas(self, width, height):
+        # Create canvas to fit the image
+        self.canvas = tkinter.Canvas(self.root, width = width, height = height)
+        self.canvas.grid(row=2, column=0, columnspan=3, sticky = tkinter.NSEW)
+
     def create_sliders(self):
         
         """

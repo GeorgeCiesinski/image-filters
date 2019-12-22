@@ -40,10 +40,8 @@ class ImageProcessor:
         # Get image dimensions
         height, width, no_channels = self.image.shape
         
-        # Create canvas to fit the image
-    # TODO: Move canvas creation to GUI, refer to it from here
-        self.canvas = tkinter.Canvas(self.g.root, width = width, height = height)
-        self.canvas.grid(row=2, column=0, columnspan=3, sticky = tkinter.NSEW)
+        # Create canvas
+        self.g.create_canvas(width, height)
         
         # Convert to PhotoImage and update canvas
         self.update_canvas_color(self.image)
@@ -259,8 +257,7 @@ class ImageProcessor:
         self.color_image = ImageTk.PhotoImage(self.color_image)
         
         # Create an image on the canvas
-    # TODO: Update to refer to GUI
-        self.canvas.create_image(0, 0, image=self.color_image, anchor=tkinter.NW)
+        self.g.canvas.create_image(0, 0, image=self.color_image, anchor=tkinter.NW)
 
     def update_canvas_gray(self, gray_image):
         
@@ -274,5 +271,4 @@ class ImageProcessor:
         self.color_image = ImageTk.PhotoImage(self.color_image)
         
         # Create an image on the canvas
-    # TODO: Update to refer to GUI
-        self.canvas.create_image(0, 0, image=self.color_image, anchor=tkinter.NW)
+        self.g.canvas.create_image(0, 0, image=self.color_image, anchor=tkinter.NW)
