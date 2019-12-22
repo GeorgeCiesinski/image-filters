@@ -1,6 +1,6 @@
 # Image Filters
 
-An app to load images, alter the image properties such as brightness, contrast, and color/grayscale. You can also apply several different filters and save the image into an output folder. The program also contains a logging system to detect errors and generate a log file with multiple backups. 
+An app to load images, alter the image properties such as brightness, contrast, and color/grayscale. You can also apply several different filters and save the image into an output folder.
 
 ## Motivation
 
@@ -31,10 +31,12 @@ TBA
 ## Features
 
 - Loads images in openCV compatible formats, listed below
-- Convert between RGB and grayscale
+- Switch between RGB and grayscale
 - Applies changes to the image brightness & contrast
 - Applies different kind of filters such as sharpness, gaussian blur, and averaging
-- Saves altered image to an output folder
+- Saves output image to user specified location
+- Program generates a detailed log file every time it is run
+- Program also backs up the past five logs in case an issue has occurred in a previous run
 
 ## Compatible Formats
 

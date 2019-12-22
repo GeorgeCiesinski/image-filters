@@ -11,10 +11,13 @@ from Gui import Gui
 from ImageProcessor import ImageProcessor
 from os import path
 
+
 def on_closing():
     """
     Closes program if user clicks x button on the window
     """
+    
+    logger.debug("User clicked the window's x button. Quiting program.")
     
     g.root.destroy()
         
