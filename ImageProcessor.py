@@ -51,93 +51,6 @@ class ImageProcessor:
         self.image_opened = False
         
         self.logger.debug("Successfully created a canvas and loaded Welcome image.")
-        
-    def create_sliders(self):
-        
-        """
-        create_sliders adds some sliders for image modification and lays them out in a grid
-        """
-        
-        # TODO: Resize Sliders when window resizes & set size as fraction of window size
-        
-        # Brightness Slider
-        self.brightness = tkinter.Scale(
-                self.g.root, 
-                from_=0, 
-                to=100, 
-                label="Brightness",
-                orient=tkinter.HORIZONTAL,
-                command=self.modify_image
-                )
-        # Sets Brightness to 50 to start
-        self.brightness.set(50)
-        
-        # Contrast Slider
-        self.contrast = tkinter.Scale(
-                self.g.root, 
-                from_=1, 
-                to=100, 
-                label="Contrast",
-                orient=tkinter.HORIZONTAL,
-                command=self.modify_image
-                )        
-        
-        # Grayscale Slider
-        self.grayscale = tkinter.Scale(
-                self.g.root, 
-                from_=0, 
-                to=1, 
-                label="Grayscale",
-                orient=tkinter.HORIZONTAL,
-                command=self.modify_image
-                )     
-        
-        # Filters Slider
-        self.filters = tkinter.Scale(
-                self.g.root, 
-                from_=0, 
-                to=len(Kernels.k_array)-1, 
-                label="Filters",
-                orient=tkinter.HORIZONTAL,
-                command=self.modify_image
-                )      
-        
-        # TODO: Make label text larger and easier to read.
-        
-        # Kernel Labels
-        self.filter_label = tkinter.Label(
-                self.g.root,
-                text="Current Convolution Filter:",
-                font=("Segoe UI", 12)
-                )
-        
-        self.filter_name_label = tkinter.Label(
-                self.g.root,
-                text="",
-                font=("Segoe UI", 16)
-                )
-        
-        self.logger.debug("Successfully created sliders and label.")
-        
-        # Put all the sliders in their grid spots
-        self.brightness.grid(row=0, column=0, sticky=tkinter.NSEW)
-        self.contrast.grid(row=1, column=0, sticky=tkinter.NSEW)
-        self.grayscale.grid(row=0, column=1, sticky=tkinter.NSEW)
-        self.filters.grid(row=1, column=1, sticky=tkinter.NSEW)
-        
-        # Put the labels in their grid spots
-        self.filter_label.grid(row=0, column=2, sticky=tkinter.NSEW)
-        self.filter_name_label.grid(row=1, column=2, sticky=tkinter.NSEW)
-        
-        # Configures grid with a weight
-        self.g.root.grid_columnconfigure(0, weight=1)
-        self.g.root.grid_columnconfigure(1, weight=1)
-        self.g.root.grid_columnconfigure(2, weight=1)
-        self.g.root.grid_rowconfigure(0, weight=0)
-        self.g.root.grid_rowconfigure(1, weight=0)
-        self.g.root.grid_rowconfigure(2, weight =1)
-        
-        self.logger.debug("Successfully packed sliders and label into grid.")
 
     def load_image(self, path):
         
@@ -172,7 +85,7 @@ class ImageProcessor:
         self.logger.debug("Successfully created gray_original image.")
         
         # Create sliders
-        self.create_sliders()
+        self.g.create_sliders()
         
         self.modify_image(self.color_original)
 
@@ -227,16 +140,16 @@ class ImageProcessor:
         """
         
         # Brightness
-        self.current_brightness = self.brightness.get()
+        self.current_brightness = self.g.brightness.get()
         
         # Contrast
-        self.current_contrast = self.contrast.get()
+        self.current_contrast = self.g.contrast.get()
         
         # Grayscale
-        self.current_grayscale = self.grayscale.get()
+        self.current_grayscale = self.g.grayscale.get()
 
         # Filters
-        self.current_filters = self.filters.get()
+        self.current_filters = self.g.filters.get()
         
     def apply_kernels(self):
         
@@ -250,7 +163,7 @@ class ImageProcessor:
         self.color_kernel = cv2.filter2D(self.color_original, -1, Kernels.k_array[kernel_idx])
         self.gray_kernel = cv2.filter2D(self.gray_original, -1, Kernels.k_array[kernel_idx])
         
-        self.filter_name_label.configure(text=Kernels.k_name[self.current_filters])
+        self.g.filter_name_label.configure(text=Kernels.k_name[self.current_filters])
         
     def apply_brightness_contrast(self):
         

@@ -9,6 +9,7 @@ import os
 import subprocess
 import webbrowser
 import tkinter
+import Kernels
 from tkinter import filedialog
 from tkinter import messagebox
 
@@ -129,6 +130,89 @@ class Gui:
         self.root.bind_all("<Control-h>", self.how_to)
         
         self.logger.debug("Successfully created the Help menu.")
+
+    def create_sliders(self):
+        
+        """
+        create_sliders adds some sliders for image modification and lays them out in a grid
+        """
+        
+        # Brightness Slider
+        self.brightness = tkinter.Scale(
+                self.root, 
+                from_=0, 
+                to=100, 
+                label="Brightness",
+                orient=tkinter.HORIZONTAL,
+                command=self.ip.modify_image
+                )
+        # Sets Brightness to 50 to start
+        self.brightness.set(50)
+        
+        # Contrast Slider
+        self.contrast = tkinter.Scale(
+                self.root, 
+                from_=1, 
+                to=100, 
+                label="Contrast",
+                orient=tkinter.HORIZONTAL,
+                command=self.ip.modify_image
+                )        
+        
+        # Grayscale Slider
+        self.grayscale = tkinter.Scale(
+                self.root, 
+                from_=0, 
+                to=1, 
+                label="Grayscale",
+                orient=tkinter.HORIZONTAL,
+                command=self.ip.modify_image
+                )     
+        
+        # Filters Slider
+        self.filters = tkinter.Scale(
+                self.root, 
+                from_=0, 
+                to=len(Kernels.k_array)-1, 
+                label="Filters",
+                orient=tkinter.HORIZONTAL,
+                command=self.ip.modify_image
+                )
+        
+        # Kernel Labels
+        self.filter_label = tkinter.Label(
+                self.root,
+                text="Current Convolution Filter:",
+                font=("Segoe UI", 12)
+                )
+        
+        self.filter_name_label = tkinter.Label(
+                self.root,
+                text="",
+                font=("Segoe UI", 16)
+                )
+        
+        self.logger.debug("Successfully created sliders and label.")
+        
+        # Put all the sliders in their grid spots
+        self.brightness.grid(row=0, column=0, sticky=tkinter.NSEW)
+        self.contrast.grid(row=1, column=0, sticky=tkinter.NSEW)
+        self.grayscale.grid(row=0, column=1, sticky=tkinter.NSEW)
+        self.filters.grid(row=1, column=1, sticky=tkinter.NSEW)
+        
+        # Put the labels in their grid spots
+        self.filter_label.grid(row=0, column=2, sticky=tkinter.NSEW)
+        self.filter_name_label.grid(row=1, column=2, sticky=tkinter.NSEW)
+        
+        # Configures grid with a weight
+        self.root.grid_columnconfigure(0, weight=1)
+        self.root.grid_columnconfigure(1, weight=1)
+        self.root.grid_columnconfigure(2, weight=1)
+        self.root.grid_rowconfigure(0, weight=0)
+        self.root.grid_rowconfigure(1, weight=0)
+        self.root.grid_rowconfigure(2, weight =1)
+        
+        self.logger.debug("Successfully packed sliders and label into grid.")
 
     def open_dialog(self, event=None):
         
