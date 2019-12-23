@@ -32,16 +32,16 @@ class ImageProcessor:
         self.g = g
                 
         # Welcome image path
-        self.image = cv2.imread("welcome.png")
+        self._image = cv2.imread("welcome.png")
         
         # Get original image dimensions
-        self.orig_height, self.orig_width, no_channels = self.image.shape
+        self.orig_height, self.orig_width, no_channels = self._image.shape
         
         # Create canvas
         self.g.create_canvas()
         
         # Convert to PhotoImage and update canvas
-        self.update_canvas_color(self.image)
+        self._update_canvas_color(self._image)
         
         # Indicates this is welcome image and that an actual image hasn't been opened
         self.image_opened = False
@@ -77,7 +77,7 @@ class ImageProcessor:
         self.g.initial_geometry()
         
         # Converts to grayscale and saves as gray_original variable
-        self.gray_original = cv2.cvtColor(self.color_original, cv2.COLOR_BGR2GRAY)
+        self._gray_original = cv2.cvtColor(self.color_original, cv2.COLOR_BGR2GRAY)
         
         self.logger.debug("Successfully created gray_original image.")
         
@@ -92,10 +92,10 @@ class ImageProcessor:
         Save an image to the specified path
         """
         
-        if self.current_grayscale == 0:
+        if self._current_grayscale == 0:
             
             try:
-                cv2.imwrite(path, self.color_modified)
+                cv2.imwrite(path, self._color_modified)
             except:
                 self.logger.debug(f"Failed to save color_modified to {path}")
             else:
@@ -103,7 +103,7 @@ class ImageProcessor:
         
         else: 
             try:
-                cv2.imwrite(path, self.gray_modified)
+                cv2.imwrite(path, self._gray_modified)
             except:
                 self.logger.debug(f"Failed to save gray_modified to {path}")
             else:
@@ -116,50 +116,50 @@ class ImageProcessor:
         """
         
         # Get trackbar values
-        self.get_trackbars()
+        self._get_trackbars()
         
         # Apply kernels
-        self.apply_kernels()
+        self._apply_kernels()
         
         # Apply brightness and contrast
-        self.apply_brightness_contrast()
+        self._apply_brightness_contrast()
 
         # Checks current image size selection and updates canvas (ensures image doesn't unintentionally resize during modification)
         self.g.resize_image()
 
-    def get_trackbars(self):
+    def _get_trackbars(self):
         
         """
         Gets the trackbar values
         """
         
         # Brightness
-        self.current_brightness = self.g.brightness.get()
+        self._current_brightness = self.g.brightness.get()
         
         # Contrast
-        self.current_contrast = self.g.contrast.get()
+        self._current_contrast = self.g.contrast.get()
         
         # Grayscale
-        self.current_grayscale = self.g.grayscale.get()
+        self._current_grayscale = self.g.grayscale.get()
 
         # Filters
-        self.current_filters = self.g.filters.get()
+        self._current_filters = self.g.filters.get()
         
-    def apply_kernels(self):
+    def _apply_kernels(self):
         
         """
         Applies the kernels to image
         """
         
-        kernel_idx = self.current_filters
+        kernel_idx = self._current_filters
         
         # apply the filters
-        self.color_kernel = cv2.filter2D(self.color_original, -1, Kernels.k_array[kernel_idx])
-        self.gray_kernel = cv2.filter2D(self.gray_original, -1, Kernels.k_array[kernel_idx])
+        self._color_kernel = cv2.filter2D(self.color_original, -1, Kernels.k_array[kernel_idx])
+        self._gray_kernel = cv2.filter2D(self._gray_original, -1, Kernels.k_array[kernel_idx])
         
-        self.g.filter_name_label.configure(text=Kernels.k_name[self.current_filters])
+        self.g.filter_name_label.configure(text=Kernels.k_name[self._current_filters])
         
-    def apply_brightness_contrast(self):
+    def _apply_brightness_contrast(self):
         
         """
         Apply the brightness and contrast to color_kernel and gray_kernel images
@@ -168,58 +168,58 @@ class ImageProcessor:
         """
         
         # Applies brightness and contrast to color image
-        self.color_modified = cv2.addWeighted(
-                self.color_kernel, 
-                self.current_contrast, 
+        self._color_modified = cv2.addWeighted(
+                self._color_kernel, 
+                self._current_contrast, 
                 np.zeros_like(self.color_original), 
                 0, 
-                self.current_brightness - 50
+                self._current_brightness - 50
                 )
         
         # Applies brightness and contrast to gray image
-        self.gray_modified = cv2.addWeighted(
-                self.gray_kernel, 
-                self.current_contrast, 
-                np.zeros_like(self.gray_original), 
+        self._gray_modified = cv2.addWeighted(
+                self._gray_kernel, 
+                self._current_contrast, 
+                np.zeros_like(self._gray_original), 
                 0, 
-                self.current_brightness - 50)
+                self._current_brightness - 50)
         
-    def update_canvas_color(self, color_image):
+    def _update_canvas_color(self, color_image):
         
         """
         update_canvas_color converts BGR to RGB and then PhotoImage before displaying on canvas
         """
     # TODO: Put this in a try catch to avoid conversion fails
         # Convert from BGR to RGB, then to PhotoImage
-        self.color_image = cv2.cvtColor(color_image, cv2.COLOR_BGR2RGB)
-        self.color_image = Image.fromarray(self.color_image)
-        self.color_image = ImageTk.PhotoImage(self.color_image)
+        self._color_image = cv2.cvtColor(color_image, cv2.COLOR_BGR2RGB)
+        self._color_image = Image.fromarray(self._color_image)
+        self._color_image = ImageTk.PhotoImage(self._color_image)
         
         # Create an image on the canvas
-        self.g.update_canvas(self.color_image)
+        self.g.update_canvas(self._color_image)
 
-    def update_canvas_gray(self, gray_image):
+    def _update_canvas_gray(self, gray_image):
         
         """
         update_canvas_gray converts Gray to RGB and then PhotoImage before displaying on canvas
         """
     # TODO: Put this in a try catch to avoid conversion fails
         # Convert from BGR to RGB, then to PhotoImage
-        self.gray_image = cv2.cvtColor(gray_image, cv2.COLOR_GRAY2RGB)
-        self.gray_image = Image.fromarray(self.gray_image)
-        self.gray_image = ImageTk.PhotoImage(self.gray_image)
+        self._gray_image = cv2.cvtColor(gray_image, cv2.COLOR_GRAY2RGB)
+        self._gray_image = Image.fromarray(self._gray_image)
+        self._gray_image = ImageTk.PhotoImage(self._gray_image)
         
         # Create an image on the canvas
-        self.g.update_canvas(self.gray_image)
+        self.g.update_canvas(self._gray_image)
         
     def resize_and_update(self):
         
         # Resize color and gray images
-        self.color_resized = cv2.resize(self.color_modified, (self.g.new_image_width, self.g.new_image_height))
-        self.gray_resized = cv2.resize(self.gray_modified, (self.g.new_image_width, self.g.new_image_height))
+        self._color_resized = cv2.resize(self._color_modified, (self.g.new_image_width, self.g.new_image_height))
+        self._gray_resized = cv2.resize(self._gray_modified, (self.g.new_image_width, self.g.new_image_height))
         
         # Display color or gray original
-        if self.current_grayscale == 0:
-            self.update_canvas_color(self.color_resized)
+        if self._current_grayscale == 0:
+            self._update_canvas_color(self._color_resized)
         else:
-            self.update_canvas_gray(self.gray_resized)    
+            self._update_canvas_gray(self._gray_resized)    
