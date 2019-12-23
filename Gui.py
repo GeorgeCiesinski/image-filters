@@ -29,10 +29,10 @@ class Gui:
         self.ip = ip
         
         # Create the window
-        self.create_window()
+        self._create_window()
         
         # Creates the menu bar
-        self.create_menu()
+        self._create_menu()
         
         # List of filetypes compatible with OpenCV
         self.file_types = [
@@ -51,7 +51,7 @@ class Gui:
                 ".tif",
                 ]
     
-    def create_window(self):
+    def _create_window(self):
         
         """
         create_window creates a new tkinter window including basic setup
@@ -114,7 +114,7 @@ class Gui:
         # Asks image processor to resize image using cv2
         self.ip.resize_and_update()
 
-    def create_menu(self):
+    def _create_menu(self):
         
         """
         create_menu creates the menu and submenus inside of it
@@ -131,20 +131,20 @@ class Gui:
         self.fileMenu.add_command(
                 label="Open", 
                 underline=0,
-                command=self.open_dialog,
+                command=self._open_dialog,
                 accelerator="Ctrl+O"
                 )
         self.fileMenu.add_command(
                 label="Save", 
                 underline=0,
-                command=self.save_dialog,
+                command=self._save_dialog,
                 accelerator="Ctrl+S"
                 )
         self.fileMenu.add_separator()
         self.fileMenu.add_command(
                 label="Quit", 
                 underline=0,
-                command=self.close_window,
+                command=self._close_window,
                 accelerator="Ctrl+Q"
                 )
         
@@ -156,23 +156,23 @@ class Gui:
         self.helpMenu.add_command(
                 label="How to use",
                 underline=0,
-                command=self.how_to,
+                command=self._how_to,
                 accelerator="Ctrl+H"
                 )
         self.helpMenu.add_command(
                 label="Open Logs Folder",
-                command=self.show_logs
+                command=self._show_logs
                 )
         self.helpMenu.add_command(
                 label="Repository & Documentation",
-                command=self.repo_docs
+                command=self._repo_docs
                 )
         
         # Shortcuts for menu options
-        self.root.bind_all("<Control-o>", self.open_dialog)
-        self.root.bind_all("<Control-s>", self.save_dialog)
-        self.root.bind_all("<Control-q>", self.close_window)
-        self.root.bind_all("<Control-h>", self.how_to)
+        self.root.bind_all("<Control-o>", self._open_dialog)
+        self.root.bind_all("<Control-s>", self._save_dialog)
+        self.root.bind_all("<Control-q>", self._close_window)
+        self.root.bind_all("<Control-h>", self._how_to)
         
         self.logger.debug("Successfully created the Help menu.")
 
@@ -275,7 +275,7 @@ class Gui:
         
         self.logger.debug("Successfully packed sliders and label into grid.")
 
-    def open_dialog(self, event=None):
+    def _open_dialog(self, event=None):
         
         """
         open_dialog creates a new window allowing the user to get the filepath of the file they want to open
@@ -321,10 +321,10 @@ class Gui:
             self.logger.debug(f"An incompatible extension was specified: {file_extension}. Failed to open file.")
             
             # Calls wrong_format method which instructs the user on correct usage
-            self.wrong_format()
+            self._wrong_format()
             
 
-    def save_dialog(self, event=None):
+    def _save_dialog(self, event=None):
         
         """
         save_dialog creates a new window allowing user to specify the save file path for the modified file
@@ -378,9 +378,9 @@ class Gui:
                     self.logger.debug(f"An incompatible extension was specified: {file_extension}. Failed to save file.")
                     
                     # Calls wrong_format method which instructs the user on correct usage
-                    self.wrong_format()
+                    self._wrong_format()
     
-    def wrong_format(self):
+    def _wrong_format(self):
         
         format_instructions = """You have tried to open or save a file using an incompatible format.
 
@@ -400,7 +400,7 @@ When saving images, please include one of these file extensions in the filename 
         
         tkinter.messagebox.showinfo("Incorrect Format", format_instructions)
         
-    def close_window(self, event=None):
+    def _close_window(self, event=None):
         
         """
         close_window destroys the tkinter window and closes the program
@@ -411,7 +411,7 @@ When saving images, please include one of these file extensions in the filename 
         # Destroys window and closes program
         self.root.destroy()
         
-    def how_to(self, event=None):
+    def _how_to(self, event=None):
         
         """
         Shows a how to use screen in a message box
@@ -431,7 +431,7 @@ Help > Repository & Documentation.
         
         tkinter.messagebox.showinfo("Instructions", how_to_instructions)
 
-    def show_logs(self):
+    def _show_logs(self):
         """
         show_dir opens the Logs/ directory in Windows Explorer
         """
@@ -449,7 +449,7 @@ Help > Repository & Documentation.
         subprocess.Popen(f'explorer {log_directory}')
         
         
-    def repo_docs(self):
+    def _repo_docs(self):
         
         """
         repo_docs opens a new window advising user that they are about to visit the repository link.
@@ -490,7 +490,7 @@ Help > Repository & Documentation.
                 width=6,
                 height=1,
                 bd=4,
-                command=self.open_link
+                command=self._open_link
                 )
         self.no_button = tkinter.Button(
                 self.links,
@@ -498,7 +498,7 @@ Help > Repository & Documentation.
                 width=6,
                 height=1,
                 bd=4,
-                command=self.close_links_window
+                command=self._close_links_window
                 )
         
         # Pack widgets into Window
@@ -510,15 +510,15 @@ Help > Repository & Documentation.
         self.yes_button.grid(row=4, column=0)
         self.no_button.grid(row=4, column=2)
     
-    def open_link(self):
+    def _open_link(self):
         
         # Opens link after user presses yes. Opens as a tab and raises the window
         webbrowser.open(self.repo_url, new=0, autoraise=True)
         
         # Calls function to close window
-        self.close_links_window()
+        self._close_links_window()
     
-    def close_links_window(self):
+    def _close_links_window(self):
         
         # Closes Repository & Documentation window
         self.links.destroy()
