@@ -161,7 +161,6 @@ class Gui:
                 )
         self.helpMenu.add_command(
                 label="Open Logs Folder",
-                # TODO: Open log directory
                 command=self.show_logs
                 )
         self.helpMenu.add_command(

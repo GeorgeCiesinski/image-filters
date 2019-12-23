@@ -10,7 +10,6 @@ Image Processor
 """
 
 import cv2
-import tkinter
 import Kernels
 import numpy as np
 from PIL import Image
@@ -124,12 +123,9 @@ class ImageProcessor:
         
         # Apply brightness and contrast
         self.apply_brightness_contrast()
-        
-        # Display color or gray original
-        if self.current_grayscale == 0:
-            self.update_canvas_color(self.color_modified)
-        else:
-            self.update_canvas_gray(self.gray_modified)    
+
+        # Checks current image size selection and updates canvas (ensures image doesn't unintentionally resize during modification)
+        self.g.resize_image()
 
     def get_trackbars(self):
         
