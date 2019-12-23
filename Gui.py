@@ -104,13 +104,17 @@ class Gui:
         self._n_height = self.root.winfo_height()
         
         # Calculate difference between old window and new window
-    # TODO: Add width resize functionality
         self.width_diff = self._n_width - self._i_width
         self.height_diff = self._n_height - self._i_height
         
-        # Create a new image with the new size
+        # Create a new image, adjust height for height bias
         self.new_image_height = self.image_height + self.height_diff
         self.new_image_width = int((self.new_image_height * self.image_width) / self.image_height)
+        
+        # If the new_image_width > _n_width (larger than window), resize for width bias instead
+        if self.new_image_width > self._n_width:
+            self.new_image_width = self.image_width + self.width_diff
+            self.new_image_height = int((self.new_image_width * self.image_height) / self.image_width)
         
         # Asks image processor to resize image using cv2
         self.ip.resize_and_update()
