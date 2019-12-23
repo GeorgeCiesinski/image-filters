@@ -1,30 +1,59 @@
-import cv2
-import numpy
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Dec  2 20:37:51 2019
+
+@author: George Ciesinski
+"""
+
+import logging
+from logging import handlers
+from Gui import Gui
+from ImageProcessor import ImageProcessor
+from os import path
 
 
-# Dummy function that does nothing (as a dummy event handler for Trackbars)
-def dummy():
-    pass
+def on_closing():
+    """
+    Closes program if user clicks x button on the window
+    """
+    
+    logger.debug("User clicked the window's x button. Quiting program.")
+    
+    g.root.destroy()
+        
 
+"""
+Basic setup and class initialization
+"""
 
-# Create the UI (Window and trackbars)
-cv2.namedWindow('Image Filters', cv2.WINDOW_GUI_NORMAL)
-# TODO: Get rid of the black rectangle in window
+# Logger Setup
 
-# TODO: Make trackbars the same width in Linux...
-# Arguments: trackbarName, windowName, value (initial), count (max value), onChange (event handler)
-# Contrast Trackbar
-cv2.createTrackbar('contrast', 'Image Filters', 1, 100, dummy)
-# Brightness Trackbar - initial value is 50 to compensate for negative brightness (cv doesn't allow negative values)
-cv2.createTrackbar('brightness', 'Image Filters', 50, 100, dummy)
-# Filter Trackbar
-# TODO: Update max value to number of filters
-cv2.createTrackbar('filters', 'Image Filters', 0, 1, dummy)
-# Grayscale Trackbar - switch only: values 0 & 1.
-cv2.createTrackbar('grayscale', 'Image Filters', 0, 1, dummy)
+# Basic settings
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s -%(levelname)s : %(message)s')
 
+# Rotating File Handler creates 5 backups on top of the current logs
+rollover_check = path.exists('Logs/logs.log')
+file_handler = handlers.RotatingFileHandler('Logs/logs.log', mode='w', maxBytes=10000, backupCount=5)
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
 
-# TODO: Remove this line!
-cv2.waitKey(0)
-# Window Cleanup
-cv2.destroyAllWindows()
+# Every time program is ran, check if log exists, rollover if yes
+if rollover_check:    
+    file_handler.doRollover()
+
+# Starts the image processor
+ip = ImageProcessor(logger)
+
+# Create GUI object
+g = Gui(ip, logger)
+
+# Put up welcome image, includes GUI instance
+ip.welcome_image(g)
+
+# Close program if window is destroyed
+g.root.protocol("WM_DELETE_WINDOW", on_closing)
+
+# Tkinter main loop
+g.root.mainloop()
