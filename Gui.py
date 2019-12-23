@@ -35,7 +35,7 @@ class Gui:
         self._create_menu()
         
         # List of filetypes compatible with OpenCV
-        self.file_types = [
+        self._file_types = [
                 ".bmp",
                 ".dib",
                 ".jpeg",
@@ -77,19 +77,19 @@ class Gui:
         self.image_height, self.image_width, no_channels = self.ip.color_original.shape
         
         # Update canvas size
-        self.canvas.config(width = self.image_width, height = self.image_height)
+        self._canvas.config(width = self.image_width, height = self.image_height)
         
         # Calculate initial root geometry
         if self.image_width < 500:
-            self.i_width = 500
+            self._i_width = 500
         else:
-            self.i_width = self.image_width
-        self.i_height = self.image_height + 150
+            self._i_width = self.image_width
+        self._i_height = self.image_height + 150
         
         # Change window size to match image
-        self.root.geometry(f"{self.i_width}x{self.i_height}")
+        self.root.geometry(f"{self._i_width}x{self._i_height}")
         
-        self.logger.debug(f"The initial window size is: height - {self.i_height}, width - {self.i_width}.")
+        self.logger.debug(f"The initial window size is: height - {self._i_height}, width - {self._i_width}.")
         
         # Binds window size to resize_image function
         self.root.bind('<Configure>', self.resize_image)
@@ -100,12 +100,13 @@ class Gui:
         """
         
         # Get new window height
-        self.n_width = self.root.winfo_width()
-        self.n_height = self.root.winfo_height()
+        self._n_width = self.root.winfo_width()
+        self._n_height = self.root.winfo_height()
         
         # Calculate difference between old window and new window
-        self.width_diff = self.n_width - self.i_width
-        self.height_diff = self.n_height - self.i_height
+    # TODO: Add width resize functionality
+        self.width_diff = self._n_width - self._i_width
+        self.height_diff = self._n_height - self._i_height
         
         # Create a new image with the new size
         self.new_image_height = self.image_height + self.height_diff
@@ -120,28 +121,28 @@ class Gui:
         create_menu creates the menu and submenus inside of it
         """
         
-        self.menu = tkinter.Menu(self.root)
-        self.root.config(menu=self.menu)
+        self._menu = tkinter.Menu(self.root)
+        self.root.config(menu=self._menu)
         
         self.logger.debug("Successfully created the base menu.")
         
         # File Menu
-        self.fileMenu = tkinter.Menu(self.menu, tearoff=False)
-        self.menu.add_cascade(label="File", underline=0, menu = self.fileMenu)
-        self.fileMenu.add_command(
+        self._fileMenu = tkinter.Menu(self._menu, tearoff=False)
+        self._menu.add_cascade(label="File", underline=0, menu = self._fileMenu)
+        self._fileMenu.add_command(
                 label="Open", 
                 underline=0,
                 command=self._open_dialog,
                 accelerator="Ctrl+O"
                 )
-        self.fileMenu.add_command(
+        self._fileMenu.add_command(
                 label="Save", 
                 underline=0,
                 command=self._save_dialog,
                 accelerator="Ctrl+S"
                 )
-        self.fileMenu.add_separator()
-        self.fileMenu.add_command(
+        self._fileMenu.add_separator()
+        self._fileMenu.add_command(
                 label="Quit", 
                 underline=0,
                 command=self._close_window,
@@ -151,19 +152,19 @@ class Gui:
         self.logger.debug("Successfully created the File menu.")
         
         # Help Menu
-        self.helpMenu = tkinter.Menu(self.menu, tearoff=False)
-        self.menu.add_cascade(label="Help", menu=self.helpMenu)
-        self.helpMenu.add_command(
+        self._helpMenu = tkinter.Menu(self._menu, tearoff=False)
+        self._menu.add_cascade(label="Help", menu=self._helpMenu)
+        self._helpMenu.add_command(
                 label="How to use",
                 underline=0,
                 command=self._how_to,
                 accelerator="Ctrl+H"
                 )
-        self.helpMenu.add_command(
+        self._helpMenu.add_command(
                 label="Open Logs Folder",
                 command=self._show_logs
                 )
-        self.helpMenu.add_command(
+        self._helpMenu.add_command(
                 label="Repository & Documentation",
                 command=self._repo_docs
                 )
@@ -181,16 +182,16 @@ class Gui:
         create_canvas initially creates the canvas used by this program
         """
         
-        self.canvas = tkinter.Canvas(self.root, width = self.ip.orig_width, height = self.ip.orig_height)
-        self.canvas.grid(row=2, column=0, columnspan=3, sticky = tkinter.NSEW)
+        self._canvas = tkinter.Canvas(self.root, width = self.ip.orig_width, height = self.ip.orig_height)
+        self._canvas.grid(row=2, column=0, columnspan=3, sticky = tkinter.NSEW)
 
     def update_canvas(self, image):
         """
         update_canvas updates the canvas with the image sent to this method
         """
         
-        self.canvas.delete("all")
-        self.canvas.create_image(0, 0, image=image, anchor=tkinter.NW)
+        self._canvas.delete("all")
+        self._canvas.create_image(0, 0, image=image, anchor=tkinter.NW)
 
     def create_sliders(self):
         
@@ -241,7 +242,7 @@ class Gui:
                 )
         
         # Kernel Labels
-        self.filter_label = tkinter.Label(
+        self._filter_label = tkinter.Label(
                 self.root,
                 text="Current Convolution Filter:",
                 font=("Segoe UI", 12)
@@ -262,7 +263,7 @@ class Gui:
         self.filters.grid(row=1, column=1, sticky=tkinter.NSEW)
         
         # Put the labels in their grid spots
-        self.filter_label.grid(row=0, column=2, sticky=tkinter.NSEW)
+        self._filter_label.grid(row=0, column=2, sticky=tkinter.NSEW)
         self.filter_name_label.grid(row=1, column=2, sticky=tkinter.NSEW)
         
         # Configures grid with a weight
@@ -302,12 +303,12 @@ class Gui:
             self.logger.debug(f"Successfully acquired the filepath: {full_path}")
         
         # Split filename & extension
-        filename, file_extension = os.path.splitext(full_path)
+        _filename, _file_extension = os.path.splitext(full_path)
         
-        self.logger.debug(f"Extension: {file_extension}")
+        self.logger.debug(f"Extension: {_file_extension}")
         
         # Checks if file is compatible with OpenCV
-        if file_extension in self.file_types:
+        if _file_extension in self._file_types:
         
             # Check if filepath is returned
             if len(full_path) > 0:
@@ -318,7 +319,7 @@ class Gui:
                 
         else:
             
-            self.logger.debug(f"An incompatible extension was specified: {file_extension}. Failed to open file.")
+            self.logger.debug(f"An incompatible extension was specified: {_file_extension}. Failed to open file.")
             
             # Calls wrong_format method which instructs the user on correct usage
             self._wrong_format()
@@ -362,12 +363,12 @@ class Gui:
                 self.logger.debug(f"Successfully acquired the save path: {full_path}")
                 
                 # Split filename & extension
-                filename, file_extension = os.path.splitext(full_path)
+                _filename, _file_extension = os.path.splitext(full_path)
                 
-                self.logger.debug(f"Extension: {file_extension}")
+                self.logger.debug(f"Extension: {_file_extension}")
                 
                 # Checks if file_extension is compatible with OpenCV
-                if file_extension in self.file_types:
+                if _file_extension in self._file_types:
             
                     # Calls ip.save_image to save the image at specified path
                     self.logger.debug("Calling ip.save_image.")
@@ -375,14 +376,14 @@ class Gui:
                     
                 else:
             
-                    self.logger.debug(f"An incompatible extension was specified: {file_extension}. Failed to save file.")
+                    self.logger.debug(f"An incompatible extension was specified: {_file_extension}. Failed to save file.")
                     
                     # Calls wrong_format method which instructs the user on correct usage
                     self._wrong_format()
     
     def _wrong_format(self):
         
-        format_instructions = """You have tried to open or save a file using an incompatible format.
+        _format_instructions = """You have tried to open or save a file using an incompatible format.
 
 Image-Filters is compatible with the below formats: 
     
@@ -398,7 +399,7 @@ When opening images, please make sure that they are one of these formats as othe
 When saving images, please include one of these file extensions in the filename to ensure the file is saved.
 """
         
-        tkinter.messagebox.showinfo("Incorrect Format", format_instructions)
+        tkinter.messagebox.showinfo("Incorrect Format", _format_instructions)
         
     def _close_window(self, event=None):
         
@@ -417,7 +418,7 @@ When saving images, please include one of these file extensions in the filename 
         Shows a how to use screen in a message box
         """
         
-        how_to_instructions = """HOW TO USE:
+        _how_to_instructions = """HOW TO USE:
             
 1. Open a file using File > Open, or Ctrl+O
 2. Modify image using sliders
@@ -429,7 +430,7 @@ In case of any bugs, export the logs and submit them as a bug at the repository 
 Help > Repository & Documentation.
 """
         
-        tkinter.messagebox.showinfo("Instructions", how_to_instructions)
+        tkinter.messagebox.showinfo("Instructions", _how_to_instructions)
 
     def _show_logs(self):
         """
@@ -437,13 +438,13 @@ Help > Repository & Documentation.
         """
         
         # Logs folder
-        log_folder = "Logs\\"
+        _log_folder = "Logs\\"
         
         # Get the current working directory
-        current_directory = os.getcwd()
+        _current_directory = os.getcwd()
         
         # Combine into Log Directory
-        log_directory = os.path.join(current_directory, log_folder)
+        log_directory = os.path.join(_current_directory, _log_folder)
         
         # Open directory in windows explorer
         subprocess.Popen(f'explorer {log_directory}')
@@ -460,40 +461,40 @@ Help > Repository & Documentation.
         # TODO: Improve the look of the window
     
         # Repository URL
-        self.repo_url = "https://github.com/GeorgeCiesinski/image-filters"
+        self._repo_url = "https://github.com/GeorgeCiesinski/image-filters"
     
         # Create new window
-        self.links = tkinter.Tk()
+        self._links = tkinter.Tk()
         
         # Window Setup
-        self.links.title("Repository & Documentation")
-        self.links.geometry("320x150")
+        self._links.title("Repository & Documentation")
+        self._links.geometry("320x150")
         
         # Create Labels
-        self.open_link_label = tkinter.Label(
-                self.links,
+        self._open_link_label = tkinter.Label(
+                self._links,
                 text="You are about to open the project repository link:"
                 )
-        self.link_url_label = tkinter.Label(
-                self.links,
-                text=self.repo_url
+        self._link_url_label = tkinter.Label(
+                self._links,
+                text=self._repo_url
                 )
-        self.empty = tkinter.Label(
-                self.links,
+        self._empty = tkinter.Label(
+                self._links,
                 text=""
                 )
         
         # Create Buttons
-        self.yes_button = tkinter.Button(
-                self.links,
+        self._yes_button = tkinter.Button(
+                self._links,
                 text="YES",
                 width=6,
                 height=1,
                 bd=4,
                 command=self._open_link
                 )
-        self.no_button = tkinter.Button(
-                self.links,
+        self._no_button = tkinter.Button(
+                self._links,
                 text="NO",
                 width=6,
                 height=1,
@@ -503,17 +504,17 @@ Help > Repository & Documentation.
         
         # Pack widgets into Window
         # Labels
-        self.open_link_label.grid(row=1, column=0, columnspan=3)
-        self.link_url_label.grid(row=2, column=0, columnspan=3)
-        self.empty.grid(row=3, column=0, columnspan=3)
+        self._open_link_label.grid(row=1, column=0, columnspan=3)
+        self._link_url_label.grid(row=2, column=0, columnspan=3)
+        self._empty.grid(row=3, column=0, columnspan=3)
         # Buttons
-        self.yes_button.grid(row=4, column=0)
-        self.no_button.grid(row=4, column=2)
+        self._yes_button.grid(row=4, column=0)
+        self._no_button.grid(row=4, column=2)
     
     def _open_link(self):
         
         # Opens link after user presses yes. Opens as a tab and raises the window
-        webbrowser.open(self.repo_url, new=0, autoraise=True)
+        webbrowser.open(self._repo_url, new=0, autoraise=True)
         
         # Calls function to close window
         self._close_links_window()
@@ -521,4 +522,4 @@ Help > Repository & Documentation.
     def _close_links_window(self):
         
         # Closes Repository & Documentation window
-        self.links.destroy()
+        self._links.destroy()
