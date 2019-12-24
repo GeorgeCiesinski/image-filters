@@ -21,9 +21,14 @@ TBA
 
 ## Screenshots
 
-- Welcome page
+### Welcome image
+
+The welcome image greets the user when the app is first opened:
+
+![Welcome Image](github/screenshots/welcome-image.png)
+
 - Menu (Gif)
-- Open an imae (Gif)
+- Open an image (Gif)
 - Modify image (Gif)
 - Resize the window (Gif)
 - Save an image (Gif)
