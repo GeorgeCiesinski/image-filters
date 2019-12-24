@@ -1,0 +1,1 @@
+Image-Filter generated logs appear in this folder.
