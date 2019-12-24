@@ -23,15 +23,9 @@ TBA
 
 ## Screenshots
 
-### Welcome Image
+### Welcome Image and Window Menu
 
-The welcome image greets you when the app is first opened:
-
-![Welcome Image](Github/screenshots/welcome-image.PNG)
-
-### Window Menu
-
-You have access to many options using the menu. Available shortcuts are also listed in the menu:
+The welcome image greets you when the app is first opened. You have access to many options using the menu. Available shortcuts are also listed in the menu:
 
 ![Window Menu](Github/gifs/window-menu.gif)
 
@@ -44,15 +38,18 @@ You can open an image by clicking Ctrl+O or File > Open:
 
 ### Image Editor
 
-Once the user opens an image, the user is presented with an editor window. The sliders control the brightness, contrast, color/grayscale, and allows the user to apply several different convolution filters:
+Once the user opens an image, the user is presented with an editor window:
 
 ![Modify Image](Github/gifs/modify-image.gif)
 
+### Resizing the Window
+
+You can resize the window which automatically resizes the opened image. This helps to accomodate images which are larger than the window. The resulting image only appears smaller in the window but maintains its original resolution when saved.
+
+![Resize Window](Github/gifs/resize-window.gif)
 
 
 
-
-- Resize the window (Gif)
 - Save an image (Gif)
 - Logs (gif)
 
@@ -64,13 +61,13 @@ Once the user opens an image, the user is presented with an editor window. The s
 
 ## Features
 
-- Loads images in openCV compatible formats, listed below
-- Switch between RGB and grayscale
+- Loads images in most openCV compatible image formats, listed below under "Compatible Formats"
+- Applies conversion between RGB and grayscale
 - Applies changes to the image brightness & contrast
 - Applies different kind of filters such as sharpness, gaussian blur, and averaging
-- Saves output image to user specified location
-- Program generates a detailed log file every time it is run
-- Program also backs up the past five logs in case an issue has occurred in a previous run
+- Saves output image to user specified location and using the specified format
+- Generates a detailed log file every time it is run
+- Backs up the past five logs in case an issue has occurred in a previous run
 
 ## Compatible Formats
 
