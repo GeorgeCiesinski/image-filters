@@ -25,7 +25,7 @@ TBA
 
 The welcome image greets the user when the app is first opened:
 
-![Welcome Image](Github/screenshots/welcome-image.png)
+![Welcome Image](Github/screenshots/welcome-image.PNG)
 
 - Menu (Gif)
 - Open an image (Gif)
