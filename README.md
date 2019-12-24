@@ -8,9 +8,11 @@ An app to load images, alter the image properties such as brightness, contrast, 
 
 I originally created this project to get a better understanding of OpenCV and TKinter. Throughout the project, I pursued further knowledge about convolution, and researched good practice when creating open source projects. This project served as a learning opportunity to improve my skills with Python. 
 
-## Getting Started
+## Built With
 
-TBA
+- OpenCV
+- TKinter
+- Pillow
 
 ### Prerequisites
 
@@ -54,12 +56,6 @@ Once you are finished modifying the image, you can save it by pressing Ctrl+S or
 
 ![Save Image](Github/gifs/save-image.gif)
 
-## Built With
-
-- OpenCV
-- TKinter
-- Pillow
-
 ## Features
 
 - Loads images in most openCV compatible image formats, listed below under "Compatible Formats"
@@ -68,14 +64,14 @@ Once you are finished modifying the image, you can save it by pressing Ctrl+S or
 - Applies different kind of filters such as sharpness, gaussian blur, and averaging
 - Saves output image to user specified location and using the specified format
 
-## Logs
+### Logs
 
 - Image-Filters generates a detailed log file every time it is run
 - Backs up the past five logs in case an issue has occurred in a previous run
 
 ![Log Directory](Github/screenshots/logs-directory.PNG)
 
-## Compatible Formats
+### Compatible Formats
 
 Although this project uses OpenCV and is theoretically able to open any OpenCV compatible image file, I decided to use the below files since they are the most common: 
 
