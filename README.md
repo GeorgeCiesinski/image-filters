@@ -6,7 +6,7 @@ An app to load images, alter the image properties such as brightness, contrast, 
 
 ## Motivation
 
-I originally created this project to get a better understanding of OpenCV and TKinter. Throughout the project, I pursued further knowledge about convolution, and researched good practice when creating open source projects. This project served as a learning opportunity to improve my skills with Python. 
+This project was created to get a better understanding of OpenCV and TKinter. It also served as an opportunity to develop experience with convolution filters, libraries such as Pillow, and to practice better conventions while programming using Python. 
 
 ## Built With
 
@@ -14,14 +14,36 @@ I originally created this project to get a better understanding of OpenCV and TK
 - TKinter
 - Pillow
 
-### Prerequisites
+## Prerequisites
 
 - Python 3.6.6
 - Dependencies from requirements.txt
 
-### Installing
+## Installing
 
-TBA
+1. Clone the repository
+2. Navigate to the repository using terminal
+3. Create a virtualenvironment, and install dependencies:
+
+'''
+virtualenv -p python3 venv
+source venv/bin/activate
+pip install -r requirements.txt
+'''
+
+Note: Feel free to skip step 2 or 3 if you manage virtual environments a different way.
+
+4. Run the program: 
+
+'''
+python app.py
+'''
+
+Note: You need to run this in Python 3.X as it will not work in Python 2.X. If "python" points at Python 2.X, you will probably need to run it using the below instead: 
+
+'''
+python3 app.py
+'''
 
 ## Screenshots
 
