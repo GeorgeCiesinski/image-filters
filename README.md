@@ -21,13 +21,24 @@ TBA
 
 ## Screenshots
 
-### Welcome image
+### Welcome Image
 
 The welcome image greets the user when the app is first opened:
 
 ![Welcome Image](Github/screenshots/welcome-image.PNG)
 
-- Menu (Gif)
+### Image Editor
+
+Once the user opens an image, the user is presented with an editor window:
+
+![Editor Window](Github/screenshots/opened-image.PNG)
+
+### Window Menu
+
+The user can has access to many options using the menu. Available shortcuts are also listed in the menu:
+
+![Window Menu](Github/gifs/window-menu.gif)
+
 - Open an image (Gif)
 - Modify image (Gif)
 - Resize the window (Gif)
