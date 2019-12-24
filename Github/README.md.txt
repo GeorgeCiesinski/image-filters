@@ -1,0 +1,1 @@
+The Github folder contains screenshots and other data that is not a functional part of this project. Image-filters can functino without this folder.
