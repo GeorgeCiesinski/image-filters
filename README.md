@@ -33,6 +33,7 @@ TBA
 
 - OpenCV
 - TKinter
+- Pillow
 
 ## Features
 
