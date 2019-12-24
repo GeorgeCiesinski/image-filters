@@ -21,7 +21,13 @@ TBA
 
 ## Screenshots
 
-TBA
+- Welcome page
+- Menu (Gif)
+- Open an imae (Gif)
+- Modify image (Gif)
+- Resize the window (Gif)
+- Save an image (Gif)
+- Logs (gif)
 
 ## Built With
 
