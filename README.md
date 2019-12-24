@@ -2,6 +2,8 @@
 
 An app to load images, alter the image properties such as brightness, contrast, and color/grayscale. You can also apply several different filters and save the image into an output folder.
 
+![Editor Window](Github/screenshots/opened-image.PNG)
+
 ## Motivation
 
 I originally created this project to get a better understanding of OpenCV and TKinter. Throughout the project, I pursued further knowledge about convolution, and researched good practice when creating open source projects. This project served as a learning opportunity to improve my skills with Python. 
@@ -42,12 +44,14 @@ You can open an image by clicking Ctrl+O or File > Open:
 
 ### Image Editor
 
-Once the user opens an image, the user is presented with an editor window:
+Once the user opens an image, the user is presented with an editor window. The sliders control the brightness, contrast, color/grayscale, and allows the user to apply several different convolution filters:
 
-![Editor Window](Github/screenshots/opened-image.PNG)
+![Modify Image](Github/gifs/modify-image.gif)
 
 
-- Modify image (Gif)
+
+
+
 - Resize the window (Gif)
 - Save an image (Gif)
 - Logs (gif)
