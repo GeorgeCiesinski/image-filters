@@ -1,5 +1,8 @@
 # Image Filters
 
+![Python Version](https://img.shields.io/badge/Python-3-blue)
+![License Info](https://img.shields.io/github/license/GeorgeCiesinski/image-filters)
+
 An app to load images, alter the image properties such as brightness, contrast, and color/grayscale. You can also apply several different filters and save the image into an output folder.
 
 ![Editor Window](Github/screenshots/opened-image.PNG)
